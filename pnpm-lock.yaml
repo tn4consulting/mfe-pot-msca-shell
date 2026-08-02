@@ -68,8 +68,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)
       '@tn4consulting/shared-ui-gcds':
-        specifier: ^0.1.2
-        version: 0.1.2(643238f5291a45a5042673760a6e2b07)
+        specifier: ^0.1.3
+        version: 0.1.3(643238f5291a45a5042673760a6e2b07)
       es-module-shims:
         specifier: ^2.8.0
         version: 2.8.4
@@ -3450,8 +3450,8 @@ packages:
       '@angular/common': 22.1.0
       '@angular/core': 22.1.0
 
-  '@tn4consulting/shared-ui-gcds@0.1.2':
-    resolution: {integrity: sha512-JS6gVHn5BqATuujDQ/yme59Fr95iIdGZqdrzjHet4YeHwu0lZZJTesar2UYESS3YXFgToPDZPzrW6JmVxRrYkg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-gcds/0.1.2/1eb84cff4121c606038e00925b9634805956abb6}
+  '@tn4consulting/shared-ui-gcds@0.1.3':
+    resolution: {integrity: sha512-1yKu+rPQ1djmBEi64B+OnCNcuWAqQxXNRFZYybYgzRfdGeFtoMsL94gb5GJ3p+rCKyd/so8tzIK+QLnPvHkm2A==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-gcds/0.1.3/ecd389b34cbbb1df0790ab33c16599cdef38fab3}
     peerDependencies:
       '@angular/core': 22.1.0
       '@angular/router': 22.1.0
@@ -11031,7 +11031,7 @@ snapshots:
       - rxjs
       - typescript
 
-  '@tn4consulting/shared-ui-gcds@0.1.2(643238f5291a45a5042673760a6e2b07)':
+  '@tn4consulting/shared-ui-gcds@0.1.3(643238f5291a45a5042673760a6e2b07)':
     dependencies:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
       '@angular/router': 22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2)
