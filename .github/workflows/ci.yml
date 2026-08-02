@@ -125,5 +125,13 @@ jobs:
       - name: Verify the deployed app is actually reachable
         run: |
           set -eu
+          # helm install --wait only waits for the pod to be Ready, not for
+          # ingress-nginx's own reconciliation loop to pick up the new
+          # Ingress resource -- give it a few seconds before asserting.
+          for i in $(seq 1 30); do
+            status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: shell.mfe-pot.local" http://localhost/ || echo 000)
+            [ "$status" = "200" ] && break
+            sleep 2
+          done
           curl -sf -H "Host: shell.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
           curl -sf -H "Host: shell.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'
