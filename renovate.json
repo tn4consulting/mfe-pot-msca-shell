@@ -1,4 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>tn4consulting/mfe-pot-renovate"]
+  "extends": [
+    "github>tn4consulting/mfe-pot"
+  ]
 }
