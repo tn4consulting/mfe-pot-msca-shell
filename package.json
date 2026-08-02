@@ -2,7 +2,12 @@
   "name": "mfe-pot-shell",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "nx run-many -t build --all",
+    "lint": "nx run-many -t lint --all",
+    "test": "nx run-many -t test --all",
+    "deploy:local": "bash tools/deploy-local.sh"
+  },
   "private": true,
   "devDependencies": {
     "@angular-architects/native-federation": "22.0.6",
