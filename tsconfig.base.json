@@ -1,0 +1,26 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "types": ["node"]
+  },
+  "exclude": ["node_modules", "tmp"]
+}

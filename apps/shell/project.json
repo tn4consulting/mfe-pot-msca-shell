@@ -1,0 +1,124 @@
+{
+  "name": "shell",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "msca",
+  "sourceRoot": "apps/shell/src",
+  "tags": [
+    "type:app",
+    "scope:shell"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "defaultConfiguration": "production",
+      "options": {
+        "cacheExternalArtifacts": true
+      },
+      "configurations": {
+        "production": {
+          "target": "shell:esbuild:production"
+        },
+        "development": {
+          "target": "shell:esbuild:development",
+          "dev": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "shell:serve-original:development",
+        "rebuildDelay": 500,
+        "cacheExternalArtifacts": true,
+        "dev": true,
+        "devServer": true,
+        "port": 0
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/shell/jest.config.cts",
+        "tsConfig": "apps/shell/tsconfig.spec.json"
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "shell:build",
+        "staticFilePath": "dist/apps/shell/browser",
+        "spa": true
+      }
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/shell",
+        "browser": "apps/shell/src/main.ts",
+        "tsConfig": "apps/shell/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/shell/public"
+          }
+        ],
+        "styles": [
+          "apps/shell/src/styles.css"
+        ],
+        "polyfills": [
+          "es-module-shims"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "serve-original": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4200
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "shell:esbuild:production"
+        },
+        "development": {
+          "buildTarget": "shell:esbuild:development"
+        }
+      }
+    }
+  }
+}

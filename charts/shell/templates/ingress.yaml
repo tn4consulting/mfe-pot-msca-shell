@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shell
+spec:
+  ingressClassName: {{ .Values.ingress.className | default "nginx" }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          # No backend to split on -- shell has no co-located BFF, so
+          # this is a single plain prefix match, unlike every other
+          # extracted app's two-path Ingress.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.frontend.name }}
+                port:
+                  number: {{ .Values.frontend.servicePort | default 80 }}

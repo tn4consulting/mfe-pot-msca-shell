@@ -1,0 +1,11 @@
+<msca-app-frame>
+  @if (session()) {
+    <ng-container appFrameNav>
+      <gcds-nav-link href="/dashboard" routerLink="/dashboard">{{ 'nav.dashboard' | transloco }}</gcds-nav-link>
+      <gcds-nav-link href="/employment-life-events" routerLink="/employment-life-events">{{ 'nav.employmentLifeEvents' | transloco }}</gcds-nav-link>
+      <gcds-nav-link href="/job-bank" routerLink="/job-bank">{{ 'nav.jobBank' | transloco }}</gcds-nav-link>
+      <gcds-nav-link href="/employment-insurance" routerLink="/employment-insurance">{{ 'nav.employmentInsurance' | transloco }}</gcds-nav-link>
+    </ng-container>
+  }
+  <router-outlet></router-outlet>
+</msca-app-frame>

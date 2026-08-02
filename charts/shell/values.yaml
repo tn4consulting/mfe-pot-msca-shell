@@ -1,0 +1,34 @@
+frontend:
+  name: shell
+  replicaCount: 1
+  image:
+    repository: mfe-pot-shell
+    tag: latest
+    pullPolicy: IfNotPresent
+  containerPort: 80
+  servicePort: 80
+  # strapiBaseUrl points at the platform repo's Strapi, which has no
+  # chart yet (see the platform repo's plan doc) -- resolveFederationManifest()
+  # tries this first, then falls back to `remotes` below, so this being
+  # unreachable just means every load takes the fallback path, not a
+  # functional break.
+  #
+  # `remotes` is the actual federation directory: each URL is the other
+  # app's own public Ingress hostname (client-side federation loading
+  # happens in the end user's browser, fetching remoteEntry.json directly
+  # from that app's origin -- unlike benefit-aggregation-bff's
+  # server-to-server calls in the dashboard chart, this is never
+  # cluster-internal traffic). job-bank, employment-insurance, and
+  # dashboard are real, already-deployed sibling repos; employment-life-events
+  # isn't extracted yet, so its entry is a plausible value for when it is.
+  runtimeConfig:
+    strapiBaseUrl: "http://strapi.mfe-pot.local"
+    remotes:
+      job-bank: "http://job-bank.mfe-pot.local/remoteEntry.json"
+      employment-insurance: "http://employment-insurance.mfe-pot.local/remoteEntry.json"
+      dashboard: "http://dashboard.mfe-pot.local/remoteEntry.json"
+      employment-life-events: "http://employment-life-events.mfe-pot.local/remoteEntry.json"
+
+ingress:
+  host: shell.mfe-pot.local
+  className: nginx

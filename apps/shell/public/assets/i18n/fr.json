@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "dashboard": "Tableau de bord (module distant)",
+    "employmentLifeEvents": "Événements de vie liés à l'emploi (module distant)",
+    "jobBank": "Guichet-Emplois (module distant)",
+    "employmentInsurance": "Assurance-emploi (module distant)"
+  },
+  "accountMenu": {
+    "signOut": "Se déconnecter ({{name}})"
+  },
+  "login": {
+    "heading": "Ouvrez une session dans Mon dossier Service Canada",
+    "intro": "Il s'agit d'une connexion simulée à des fins de démonstration seulement -- aucun identifiant réel n'est utilisé.",
+    "signInButton": "Ouvrir une session avec CléGC (simulation)"
+  }
+}

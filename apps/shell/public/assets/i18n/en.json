@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "dashboard": "Dashboard (federated remote)",
+    "employmentLifeEvents": "Employment Life Events (federated remote)",
+    "jobBank": "Job Bank (federated remote)",
+    "employmentInsurance": "Employment Insurance (federated remote)"
+  },
+  "accountMenu": {
+    "signOut": "Sign out ({{name}})"
+  },
+  "login": {
+    "heading": "Sign in to My Service Canada Account",
+    "intro": "This is a mock sign-in for demonstration purposes only -- no real credentials are used.",
+    "signInButton": "Sign in with GCKey (mock)"
+  }
+}
