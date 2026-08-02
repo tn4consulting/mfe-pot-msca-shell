@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22.22.0'
+  PNPM_VERSION: '10.33.2'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  # Stage 1: lint/test/build, matching `nx run-many -t lint,test,build --all`
+  # from local dev (see CLAUDE.md). @tn4consulting/* resolves from GitHub
+  # Packages via .npmrc; GITHUB_TOKEN works for same-org package reads.
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint, test, build
+        run: pnpm exec nx run-many -t lint,test,build --all
+
+  # Stage 2: build the image, deploy this app's own Helm chart to an
+  # ephemeral kind cluster, and confirm it actually serves -- the
+  # kind-based validation stage from CLAUDE.md's Hosting section, now
+  # automated instead of the one-off manual run it started as. Shell has
+  # no co-located BFF, so this job only builds/loads/checks one image,
+  # unlike the other 3 extracted app repos.
+  kind-validation:
+    needs: lint-test-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+        with:
+          path: mfe-pot-shell
+
+      # charts/shell/Chart.yaml's library-chart dependency resolves via a
+      # sibling-checkout-relative file:// path (see CLAUDE.md) -- checked
+      # out alongside this repo so the same relative layout local dev
+      # uses (both under one parent directory) holds here too. Public
+      # repo, so the default GITHUB_TOKEN reads it with no extra secret.
+      - name: Checkout mfe-pot-platform (sibling - Helm library chart + kind config)
+        uses: actions/checkout@v4
+        with:
+          repository: tn4consulting/mfe-pot-platform
+          path: mfe-pot-platform
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build shell image
+        uses: docker/build-push-action@v6
+        with:
+          context: mfe-pot-shell
+          file: mfe-pot-shell/apps/shell/Dockerfile
+          tags: mfe-pot-shell:kind
+          load: true
+          secrets: |
+            npm_token=${{ secrets.GITHUB_TOKEN }}
+
+      # Pinned node image: this environment's Docker daemon (cgroup v1)
+      # can't kubeadm-init kind's current default node image (built for
+      # k8s 1.36) -- see CLAUDE.md. Kept pinned here too for consistency
+      # with the proven local recipe, even though GitHub-hosted runners
+      # typically run cgroup v2 and may not need the pin.
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          config: mfe-pot-platform/tools/k8s/kind-config.yaml
+          node_image: kindest/node:v1.27.3
+          wait: 120s
+
+      - name: Install ingress-nginx (kind flavour)
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=120s
+
+      - name: Load image into kind
+        run: kind load docker-image mfe-pot-shell:kind
+
+      - uses: azure/setup-helm@v4
+
+      - name: helm dependency update
+        run: helm dependency update mfe-pot-shell/charts/shell
+
+      - name: helm install shell
+        run: |
+          helm install shell mfe-pot-shell/charts/shell \
+            -f mfe-pot-shell/charts/shell/values.yaml \
+            -f mfe-pot-shell/charts/shell/values-kind.yaml \
+            --wait --timeout 120s
+
+      # Same checks proven manually (see CLAUDE.md/the platform repo's
+      # plan doc): the app actually serves and the ConfigMap-injected
+      # federation directory (the `remotes` map) round-tripped -- not
+      # checking that any remote's remoteEntry.json is actually reachable
+      # from here, since this workflow doesn't deploy the other 4 apps.
+      - name: Verify the deployed app is actually reachable
+        run: |
+          set -eu
+          curl -sf -H "Host: shell.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
+          curl -sf -H "Host: shell.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'
