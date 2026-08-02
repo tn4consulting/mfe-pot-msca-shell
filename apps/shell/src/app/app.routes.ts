@@ -28,9 +28,12 @@ export const appRoutes: Route[] = [
           Promise.all([
             loadRemoteModule('dashboard', './PaymentHistoryWidget'),
             loadRemoteModule('dashboard', './RemoteProviders'),
-          ]).then(([widgetModule, providersModule]) => ({
+          ]).then(async ([widgetModule, providersModule]) => ({
             component: widgetModule.DashboardFeaturePaymentHistory,
-            providers: providersModule.REMOTE_PROVIDERS ?? [],
+            // dashboard's REMOTE_PROVIDERS is a Promise (it fetches its own
+            // env.js for its BFF/Strapi base URLs) -- see shared-runtime-config's
+            // fetchRuntimeConfig and RemoteRouteHost's identical await.
+            providers: (await providersModule.REMOTE_PROVIDERS) ?? [],
           })),
       },
     ],
