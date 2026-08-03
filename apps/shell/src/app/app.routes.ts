@@ -1,6 +1,11 @@
 import { Route } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
-import { PAYMENT_HISTORY_WIDGET_LOADER, RemoteRouteHost } from '@tn4consulting/shared-federation-runtime';
+import {
+  EI_REPORTING_STATUS_WIDGET_LOADER,
+  JOB_APPLICATIONS_WIDGET_LOADER,
+  PAYMENT_HISTORY_WIDGET_LOADER,
+  RemoteRouteHost,
+} from '@tn4consulting/shared-federation-runtime';
 import { requireSessionGuard } from '@tn4consulting/shared-auth';
 import { LoginPage } from './login-page/login-page';
 
@@ -11,6 +16,35 @@ export const appRoutes: Route[] = [
     component: RemoteRouteHost,
     data: { remoteName: 'dashboard' },
     canActivate: [requireSessionGuard],
+    providers: [
+      {
+        // job-bank's job-applications widget is a React component -- see
+        // JobApplicationsList's own doc for why it's zero-prop and
+        // therefore has no providers of its own to load alongside it.
+        provide: JOB_APPLICATIONS_WIDGET_LOADER,
+        useValue: () =>
+          loadRemoteModule('job-bank', './JobApplicationsWidget').then((widgetModule) => ({
+            kind: 'react' as const,
+            component: widgetModule['JobApplicationsList'],
+          })),
+      },
+      {
+        // Same component+providers pairing as the payment-history widget
+        // below -- employment-insurance's widget injects
+        // EMPLOYMENT_INSURANCE_API_CLIENT, so it needs its own
+        // environment injector built from its own './RemoteProviders'.
+        provide: EI_REPORTING_STATUS_WIDGET_LOADER,
+        useValue: () =>
+          Promise.all([
+            loadRemoteModule('employment-insurance', './EiReportingStatusWidget'),
+            loadRemoteModule('employment-insurance', './RemoteProviders'),
+          ]).then(async ([widgetModule, providersModule]) => ({
+            kind: 'angular' as const,
+            component: widgetModule.EmploymentInsuranceFeatureReportingStatus,
+            providers: (await providersModule.REMOTE_PROVIDERS) ?? [],
+          })),
+      },
+    ],
   },
   {
     path: 'employment-life-events',
