@@ -41,7 +41,7 @@ export const appRoutes: Route[] = [
   {
     path: 'job-bank',
     component: RemoteRouteHost,
-    data: { remoteName: 'job-bank' },
+    data: { remoteName: 'job-bank', remoteKind: 'react' },
     canActivate: [requireSessionGuard],
   },
   {

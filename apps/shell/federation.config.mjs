@@ -4,6 +4,13 @@ import {
   sharedFederationFeatures,
   sharedFederationSkip,
 } from '@tn4consulting/shared-federation-config';
+// The shell's own bundle mounts a federated React remote's exported `App`
+// via REACT_MOUNTER (react-mounter.ts), calling createRoot/createElement
+// itself -- it must share the same react/react-dom singleton the remote's
+// bundle resolves to, or that call throws "invalid hook call" against a
+// second, disconnected React copy. See that module's own subpath doc for
+// why this can't just be folded into sharedFederationDependencies above.
+import { sharedReactFederationDependencies } from '@tn4consulting/shared-federation-config/react';
 
 // Deliberately NOT sharing '@angular-architects/native-federation' itself.
 // It's tempting (a remote calling loadRemoteModule to embed another remote's
@@ -21,7 +28,7 @@ import {
 export default withNativeFederation({
   name: 'shell',
 
-  shared: sharedFederationDependencies,
+  shared: { ...sharedFederationDependencies, ...sharedReactFederationDependencies },
   skip: sharedFederationSkip,
 
   // Please read our FAQ about sharing libs:
