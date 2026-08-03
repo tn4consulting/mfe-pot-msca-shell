@@ -65,7 +65,7 @@
     "@gcds-core/components-angular": "1.4.0",
     "@jsverse/transloco": "8.4.0",
     "@tn4consulting/shared-auth": "^0.1.1",
-    "@tn4consulting/shared-federation-config": "^0.3.0",
+    "@tn4consulting/shared-federation-config": "^0.4.0",
     "@tn4consulting/shared-federation-runtime": "^0.3.0",
     "@tn4consulting/shared-i18n": "^0.1.2",
     "@tn4consulting/shared-ui-gcds": "^0.1.4",
