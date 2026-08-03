@@ -1,5 +1,11 @@
 # mfe-pot-shell
 
+> **Disclaimer:** This is an independent proof-of-technology project, not
+> affiliated with, endorsed by, or associated with Service Canada,
+> Employment and Social Development Canada (ESDC), or the Government of
+> Canada in any way. "MSCA" and any GC branding/design-system references are
+> used only to ground the proof of technology in a realistic scenario.
+
 The host app for the mfe-pot Government of Canada MFE proof-of-technology —
 branded MSCA app frame (GC header/footer, language switcher, mock sign-in)
 that loads the other 4 apps dynamically at runtime as federated remotes.
