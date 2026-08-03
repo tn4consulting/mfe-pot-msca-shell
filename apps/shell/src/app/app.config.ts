@@ -5,8 +5,9 @@ import {
 import { provideRouter } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { provideMfeTransloco } from '@tn4consulting/shared-i18n';
-import { REMOTE_MODULE_LOADER } from '@tn4consulting/shared-federation-runtime';
+import { REACT_MOUNTER, REMOTE_MODULE_LOADER } from '@tn4consulting/shared-federation-runtime';
 import { appRoutes } from './app.routes';
+import { mountReactRemote } from './react-mounter';
 
 // import.meta.url reflects wherever THIS bundled chunk is actually served
 // from (this app's own origin), not the shell's -- required so translation
@@ -34,5 +35,8 @@ export const appConfig: ApplicationConfig = {
     // builder reliably dedupes the import with main.ts's, so it's provided
     // here and injected via DI instead.
     { provide: REMOTE_MODULE_LOADER, useValue: loadRemoteModule },
+    // Same dedupe reasoning as REMOTE_MODULE_LOADER above, for react/react-dom
+    // instead of the federation runtime -- see react-mounter.ts.
+    { provide: REACT_MOUNTER, useValue: mountReactRemote },
   ],
 };
