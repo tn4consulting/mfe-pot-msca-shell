@@ -12,5 +12,11 @@
     "heading": "Ouvrez une session dans Mon dossier Service Canada",
     "intro": "Il s'agit d'une connexion simulée à des fins de démonstration seulement -- aucun identifiant réel n'est utilisé.",
     "signInButton": "Ouvrir une session avec CléGC (simulation)"
+  },
+  "authCallback": {
+    "signingIn": "Connexion en cours...",
+    "errorHeading": "La connexion n'a pas abouti",
+    "errorMessage": "Une erreur est survenue lors de la connexion. Veuillez réessayer.",
+    "returnToSignIn": "Retourner à la page de connexion"
   }
 }

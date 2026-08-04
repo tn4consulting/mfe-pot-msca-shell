@@ -12,5 +12,11 @@
     "heading": "Sign in to My Service Canada Account",
     "intro": "This is a mock sign-in for demonstration purposes only -- no real credentials are used.",
     "signInButton": "Sign in with GCKey (mock)"
+  },
+  "authCallback": {
+    "signingIn": "Signing you in...",
+    "errorHeading": "Sign-in didn't complete",
+    "errorMessage": "Something went wrong completing your sign-in. Please try again.",
+    "returnToSignIn": "Return to sign-in"
   }
 }

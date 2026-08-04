@@ -1,0 +1,9 @@
+<section class="auth-callback-page">
+  @if (!failed) {
+    <p>{{ 'authCallback.signingIn' | transloco }}</p>
+  } @else {
+    <h1>{{ 'authCallback.errorHeading' | transloco }}</h1>
+    <p>{{ 'authCallback.errorMessage' | transloco }}</p>
+    <button type="button" (click)="returnToSignIn()">{{ 'authCallback.returnToSignIn' | transloco }}</button>
+  }
+</section>

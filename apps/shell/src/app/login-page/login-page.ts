@@ -1,12 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@tn4consulting/shared-i18n';
-import { createMockSession, getStoredSession, storeSession } from '@tn4consulting/shared-auth';
+import { getStoredSession } from '@tn4consulting/shared-auth';
+import { runtimeConfig } from '../../runtime-config';
+import { computePkceCodeChallenge, generateRandomToken, storeAuthFlight } from '../auth-flight';
+import { redirectTo } from '../browser-redirect';
+
+const CLIENT_ID = 'mfe-pot-shell';
 
 /**
- * Stands in for a real Sign-In-Canada / GCKey redirect flow -- see
- * CLAUDE.md's "Security: defense in depth" section. No real IdP, no real
- * credentials; this is a proof-of-technology, not a production login.
+ * Redirects to mock-idp's `/authorize` -- an OIDC-shaped
+ * authorization-code + PKCE flow standing in for a real IBM Verify SaaS
+ * redirect (see mfe-pot's plan doc for the full design rationale). The
+ * actual session is only established once `/auth/callback` completes the
+ * code exchange.
  */
 @Component({
   selector: 'msca-login-page',
@@ -24,8 +31,21 @@ export class LoginPage implements OnInit {
     }
   }
 
-  protected signIn(): void {
-    storeSession(createMockSession());
-    this.router.navigateByUrl('/dashboard');
+  protected async signIn(): Promise<void> {
+    const state = generateRandomToken();
+    const codeVerifier = generateRandomToken();
+    const codeChallenge = await computePkceCodeChallenge(codeVerifier);
+    storeAuthFlight({ state, codeVerifier });
+
+    const redirectUri = `${window.location.origin}/auth/callback`;
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: CLIENT_ID,
+      redirect_uri: redirectUri,
+      state,
+      code_challenge: codeChallenge,
+      code_challenge_method: 'S256',
+    });
+    redirectTo(`${runtimeConfig.mockIdpBaseUrl}/authorize?${params.toString()}`);
   }
 }

@@ -9,17 +9,27 @@ import { initFederation } from '@angular-architects/native-federation';
  * `shared-remote-registry` below. `getRuntimeConfig`'s merge-over-defaults
  * behavior is small enough to duplicate inline here; see CLAUDE.md's
  * Hosting section for the full runtime-config mechanism.
+ *
+ * The ambient `Window.__mfePotEnv` type here must match
+ * `shared-runtime-config`'s own declaration exactly (`Record<string,
+ * unknown> | undefined`) -- `apps/shell/src/runtime-config.ts` (used by
+ * the lazy-loaded login-page/auth-callback-page routes, which don't hit
+ * this file's bare-specifier constraint) imports that package too, and
+ * TypeScript requires identical types across merged ambient declarations
+ * of the same global interface member once both are in the same program.
  */
 declare global {
   interface Window {
-    __mfePotEnv?: {
-      strapiBaseUrl?: string;
-      remotes?: Record<string, string>;
-    };
+    __mfePotEnv?: Record<string, unknown>;
   }
 }
 
-const devDefaults = {
+interface ShellRuntimeConfig {
+  strapiBaseUrl: string | undefined;
+  remotes: Record<string, string>;
+}
+
+const devDefaults: ShellRuntimeConfig = {
   strapiBaseUrl: 'http://localhost:1337',
   remotes: {
     dashboard: 'http://localhost:4201/remoteEntry.json',
@@ -29,7 +39,8 @@ const devDefaults = {
   },
 };
 
-const runtimeConfig = { ...devDefaults, ...window.__mfePotEnv };
+const injected = window.__mfePotEnv as Partial<ShellRuntimeConfig> | undefined;
+const runtimeConfig: ShellRuntimeConfig = { ...devDefaults, ...injected };
 
 /**
  * Remote discovery goes through a RemoteRegistryProvider abstraction (see

@@ -8,9 +8,13 @@ import {
 } from '@tn4consulting/shared-federation-runtime';
 import { requireSessionGuard } from '@tn4consulting/shared-auth';
 import { LoginPage } from './login-page/login-page';
+import { AuthCallbackPage } from './auth-callback-page/auth-callback-page';
 
 export const appRoutes: Route[] = [
   { path: '', component: LoginPage },
+  // No requireSessionGuard -- there is no session yet until this route
+  // completes the code exchange with mock-idp.
+  { path: 'auth/callback', component: AuthCallbackPage },
   {
     path: 'dashboard',
     component: RemoteRouteHost,
