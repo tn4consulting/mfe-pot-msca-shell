@@ -24,6 +24,12 @@ frontend:
   # isn't extracted yet, so its entry is a plausible value for when it is.
   runtimeConfig:
     strapiBaseUrl: "http://cms.mfe-pot.local"
+    # mock-idp's own public Ingress hostname (mfe-pot-platform's
+    # charts/mock-idp) -- browser-to-server, since the citizen's own
+    # browser does a real top-level navigation here for /authorize and a
+    # same-origin-CORS fetch for /token, same reason strapiBaseUrl above
+    # is a public hostname and not in-cluster Service DNS.
+    mockIdpBaseUrl: "http://mock-idp.mfe-pot.local"
     remotes:
       job-bank: "http://job-bank.mfe-pot.local/remoteEntry.json"
       employment-insurance: "http://employment-insurance.mfe-pot.local/remoteEntry.json"
