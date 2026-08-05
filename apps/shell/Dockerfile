@@ -22,7 +22,6 @@ WORKDIR /workspace
 ENV CI=true
 RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json tsconfig.json .npmrc ./
-COPY patches ./patches
 COPY apps ./apps
 COPY tools ./tools
 RUN --mount=type=secret,id=npm_token \

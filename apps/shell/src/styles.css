@@ -1,1 +1,13 @@
 @import '@gcds-core/components/dist/gcds/gcds.css';
+
+/* Login/auth-callback pages -- previously two identical per-component
+   .css files (login-page.css, auth-callback-page.css); folded into one
+   global stylesheet since esbuild has no Angular-CLI-style per-component
+   styleUrl bundling. */
+.login-page,
+.auth-callback-page {
+  max-width: 40rem;
+  margin: 3rem auto;
+  text-align: center;
+}
+

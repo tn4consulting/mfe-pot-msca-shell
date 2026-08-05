@@ -4,14 +4,17 @@
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
     "target": "es2016",
-    "types": ["jest", "node"],
-    "moduleResolution": "node10"
+    "types": ["jest", "node", "@testing-library/jest-dom"],
+    "moduleResolution": "node10",
+    "ignoreDeprecations": "6.0"
   },
   "files": ["src/test-setup.ts"],
   "include": [
     "jest.config.ts",
     "src/**/*.test.ts",
+    "src/**/*.test.tsx",
     "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
     "src/**/*.d.ts"
   ]
 }
