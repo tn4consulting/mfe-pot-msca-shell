@@ -38,15 +38,14 @@ function DashboardRoute() {
     >
       <EiReportingStatusWidgetLoaderContext.Provider
         value={async () => {
-          // TRANSITIONAL: employment-insurance is still Angular at time of
-          // writing, so this resolves to an Angular component class, not
-          // a real React ComponentType -- see the module doc above.
+          // employment-insurance converted to React in Phase 3 -- this
+          // now resolves to a real ComponentType, no cast-through-unknown
+          // needed for that reason anymore (the `as` stays only because
+          // loadRemoteModule's own return type is a plain
+          // Record<string, unknown>, same as every other federated
+          // module access in this file).
           const widgetModule = await loadRemoteModule('employment-insurance', './EiReportingStatusWidget');
-          return {
-            component: widgetModule['EmploymentInsuranceFeatureReportingStatus'] as ComponentType<
-              Record<string, unknown>
-            >,
-          };
+          return { component: widgetModule['ReportingStatus'] as ComponentType<Record<string, unknown>> };
         }}
       >
         <RemoteRouteHost remoteName="dashboard" />
