@@ -59,6 +59,16 @@ helm upgrade --install shell charts/shell \
   -f charts/shell/values-kind.yaml \
   --wait --timeout 120s
 
+# values-kind.yaml pins a static image tag with pullPolicy: Never, so a
+# rebuilt image loaded above under the same tag doesn't change the
+# Deployment's pod spec -- Helm sees no diff and Kubernetes has no signal
+# to restart the already-running pod, which keeps serving the OLD image
+# content indefinitely (confirmed the hard way: a redeploy silently kept
+# serving a pre-fix JS bundle). Force it explicitly every run.
+echo "==> Restarting deployment to pick up the freshly built image..."
+kubectl rollout restart deployment/shell
+kubectl rollout status deployment/shell --timeout=60s
+
 echo "==> Waiting for ingress..."
 status=000
 for i in $(seq 1 30); do
