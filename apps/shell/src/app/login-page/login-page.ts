@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TranslocoPipe } from '@tn4consulting/shared-i18n';
 import { getStoredSession } from '@tn4consulting/shared-auth';
 import { runtimeConfig } from '../../runtime-config';
-import { computePkceCodeChallenge, generateRandomToken, storeAuthFlight } from '../auth-flight';
+import { computePkceChallenge, generateRandomToken, storeAuthFlight } from '../auth-flight';
 import { redirectTo } from '../browser-redirect';
 
 const CLIENT_ID = 'mfe-pot-shell';
@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
   protected async signIn(): Promise<void> {
     const state = generateRandomToken();
     const codeVerifier = generateRandomToken();
-    const codeChallenge = await computePkceCodeChallenge(codeVerifier);
+    const { codeChallenge, codeChallengeMethod } = await computePkceChallenge(codeVerifier);
     storeAuthFlight({ state, codeVerifier });
 
     const redirectUri = `${window.location.origin}/auth/callback`;
@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
       redirect_uri: redirectUri,
       state,
       code_challenge: codeChallenge,
-      code_challenge_method: 'S256',
+      code_challenge_method: codeChallengeMethod,
     });
     redirectTo(`${runtimeConfig.mockIdpBaseUrl}/authorize?${params.toString()}`);
   }

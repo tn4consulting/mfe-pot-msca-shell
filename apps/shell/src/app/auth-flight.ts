@@ -41,8 +41,26 @@ export function generateRandomToken(): string {
   return base64UrlEncode(crypto.getRandomValues(new Uint8Array(32)));
 }
 
-/** RFC 7636 PKCE `S256` transform: base64url(SHA-256(code_verifier)). */
-export async function computePkceCodeChallenge(codeVerifier: string): Promise<string> {
+export interface PkceChallenge {
+  codeChallenge: string;
+  codeChallengeMethod: 'S256' | 'plain';
+}
+
+/**
+ * RFC 7636 PKCE. Prefers `S256` (base64url(SHA-256(code_verifier))), but
+ * falls back to `plain` (code_challenge === code_verifier) when
+ * `crypto.subtle` isn't available -- SubtleCrypto only exists in a secure
+ * context (HTTPS, or the literal hostname `localhost`), so a plain-HTTP
+ * deployment on a hostname like `shell.mfe-pot.local` has none at all
+ * (confirmed the hard way: `TypeError: Cannot read properties of undefined
+ * (reading 'digest')` clicking sign-in there). `plain` is RFC 7636's own
+ * documented fallback for exactly this case, not a workaround invented
+ * here. mock-idp's `/token` handler verifies both methods.
+ */
+export async function computePkceChallenge(codeVerifier: string): Promise<PkceChallenge> {
+  if (!crypto.subtle) {
+    return { codeChallenge: codeVerifier, codeChallengeMethod: 'plain' };
+  }
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
-  return base64UrlEncode(new Uint8Array(digest));
+  return { codeChallenge: base64UrlEncode(new Uint8Array(digest)), codeChallengeMethod: 'S256' };
 }
