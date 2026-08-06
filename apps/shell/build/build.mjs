@@ -61,12 +61,31 @@ await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.j
 // (which only synthesizes named exports it can prove are used within the
 // same build graph -- a shared chunk built as its own standalone entry
 // point has none to find, degrading to a bare `export default`).
+// `dev: true` here even in a production build -- deliberately NOT `dev`
+// (the CLI-flag-derived value used everywhere else in this file). This
+// step's own minification, not just this app's, is broken: confirmed the
+// hard way that a MINIFIED shared react.js chunk crashes at runtime
+// ("TypeError: i is not a function", every named React import resolving
+// to `undefined`) while the DEFAULT export stays correctly populated. The
+// minifier's dead-code elimination strips the CJS module body
+// `@chialab/esbuild-plugin-commonjs`'s named-export extraction depends on
+// (`node_modules/.../native-federation-esbuild/.../node-modules-bundler.js`
+// hardcodes `minify: !dev` with no independent minify-only control) --
+// react's own package.json isn't `sideEffects: false`, but something in
+// this exact CJS-shim-plus-minify combination still convinces esbuild the
+// module body is prunable. The resulting `-dev.js`-suffixed filename on
+// these specific vendor chunks (react.js, react-dom.js,
+// shared-federation-runtime.js) is a cosmetic side effect of reusing the
+// `dev` flag for this, not a sign anything else is running in dev mode --
+// this app's own main.tsx/bootstrap.tsx bundle below is still fully
+// minified. Accepting the naming quirk was judged lower-risk than
+// patching a third-party dependency to decouple minification from it.
 const result = await runEsBuildBuilder('apps/shell/federation.config.mjs', {
   workspaceRoot: process.cwd(),
   outputPath,
   tsConfig: 'apps/shell/tsconfig.app.json',
   packageJson: 'package.json',
-  dev,
+  dev: true,
   watch: false,
   adapterConfig: {
     plugins: [],
