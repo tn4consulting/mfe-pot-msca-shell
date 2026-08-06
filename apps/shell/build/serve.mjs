@@ -47,7 +47,11 @@ await runEsBuildBuilder('apps/shell/federation.config.mjs', {
 // import into a single file, hoisting its `react-dom/client` import to
 // load before initFederation ever runs.
 // See build.mjs's comment on the same options: classic transform sidesteps
-// react/jsx-runtime's unresolvable-as-external problem.
+// react/jsx-runtime's unresolvable-as-external problem. `@tn4consulting/shared-federation-runtime`
+// must be external too -- see build.mjs's comment for the full story
+// (otherwise this bundle silently inlines a second, disconnected copy of
+// the widget-loader Context objects, and every cross-remote widget
+// consumer's `useContext` call reads that copy's `undefined` default).
 const mainCtx = await esbuild.context({
   entryPoints: ['apps/shell/src/main.tsx'],
   outdir: outputPath,
@@ -60,7 +64,7 @@ const mainCtx = await esbuild.context({
   jsxFragment: 'React.Fragment',
   target: 'es2022',
   sourcemap: true,
-  external: ['react', 'react-dom', 'react-dom/client'],
+  external: ['react', 'react-dom', 'react-dom/client', '@tn4consulting/shared-federation-runtime'],
   define: {
     'process.env.NODE_ENV': JSON.stringify('development'),
   },

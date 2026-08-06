@@ -119,6 +119,21 @@ await result.close();
 // policy), and since this whole bundle already treats 'react' itself as
 // external, classic transform's plain `React.createElement(...)` calls
 // only ever need that one already-resolvable import.
+//
+// `@tn4consulting/shared-federation-runtime` MUST also be external here,
+// same reasoning as react/react-dom above -- confirmed the hard way (a
+// real dashboard route, all sibling remotes running) that omitting it
+// silently inlines a second, disconnected copy of this bundle's own
+// widget-loader Context objects into bootstrap.tsx's output. routes.tsx's
+// `<JobApplicationsWidgetLoaderContext.Provider>` then writes into THAT
+// copy's `_currentValue`, while a remote's `useJobApplicationsWidgetLoader()`
+// (imported via the correctly-shared federation chunk instead) reads off
+// the OTHER copy's default (`undefined`) -- no error, no console output,
+// just every cross-remote widget silently rendering its "unavailable"
+// fallback. The federation build above (runEsBuildBuilder) already
+// produces the correct shared chunk + import-map entry for this package;
+// this external entry is what makes THIS bundle's own bare import resolve
+// through that entry instead of getting bundled inline a second time.
 await esbuild.build({
   entryPoints: ['apps/shell/src/main.tsx'],
   outdir: outputPath,
@@ -132,7 +147,7 @@ await esbuild.build({
   target: 'es2022',
   minify: !dev,
   sourcemap: true,
-  external: ['react', 'react-dom', 'react-dom/client'],
+  external: ['react', 'react-dom', 'react-dom/client', '@tn4consulting/shared-federation-runtime'],
   define: {
     'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production'),
   },
