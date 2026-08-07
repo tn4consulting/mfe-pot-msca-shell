@@ -9,7 +9,7 @@ import { AppFrame } from './AppFrame';
 // jsdom-based assertions (no shadow-DOM rendering to inspect here) and
 // isn't guaranteed to behave identically under jsdom -- mocked out so
 // these tests exercise only this component's own logic.
-jest.mock('./register-gcds', () => ({}));
+jest.mock('./register-scds', () => ({}));
 jest.mock('./asset-base-url', () => ({ assetBaseUrl: 'http://localhost:4200/' }));
 
 function renderFrame() {

@@ -12,9 +12,6 @@ importers:
 
   .:
     dependencies:
-      '@gcds-core/components':
-        specifier: 1.4.0
-        version: 1.4.0
       '@softarc/native-federation':
         specifier: 4.3.2
         version: 4.3.2(typescript@6.0.3)
@@ -25,8 +22,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))
       '@tn4consulting/shared-federation-config':
-        specifier: ^0.6.0
-        version: 0.6.0(@softarc/native-federation@4.3.2(typescript@6.0.3))
+        specifier: ^0.7.0
+        version: 0.7.0(@softarc/native-federation@4.3.2(typescript@6.0.3))
       '@tn4consulting/shared-federation-runtime':
         specifier: ^1.0.1
         version: 1.0.1(react@19.2.8)
@@ -36,6 +33,9 @@ importers:
       '@tn4consulting/shared-runtime-config':
         specifier: ^0.1.4
         version: 0.1.4
+      '@tn4consulting/shared-ui-scds-core':
+        specifier: ^1.0.0
+        version: 1.0.0
       es-module-shims:
         specifier: ^2.8.0
         version: 2.8.4
@@ -1108,9 +1108,6 @@ packages:
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@gcds-core/components@1.4.0':
-    resolution: {integrity: sha512-DZ1eSt+uTjqQG+SMMLKAIgzscWR3dPG+tIY7fpGsSF26u7/F8dckmMKx6KVY8YERpkFSrY1jEGEk16aLaczz+w==}
-
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
     engines: {node: '>=18.18.0'}
@@ -2040,10 +2037,6 @@ packages:
   '@swc/types@0.1.28':
     resolution: {integrity: sha512-V6Mnml8v09QALx6K0elJ7o9K/MkVDtW3t6L+7Ou/JcWtb3xwId2AH4FeOceySd2JaO87IMw4+6vSZxLm34LPbw==}
 
-  '@tanstack/table-core@8.21.3':
-    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
-    engines: {node: '>=12'}
-
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
     engines: {node: '>=18'}
@@ -2079,8 +2072,8 @@ packages:
       '@angular/core': '>=22.0.0'
       '@angular/router': '>=22.0.0'
 
-  '@tn4consulting/shared-federation-config@0.6.0':
-    resolution: {integrity: sha512-tMXXdozoHz2kqeMIHOXSb8jOqOew0l2FGLd9eGLQX4os8neb83Fof2YhRz8i6KyYc6wcjLV6ayi3CKMaUnCUHw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-config/0.6.0/fe73d2b86e070376faf5af203e6ff3e0e27d86cb}
+  '@tn4consulting/shared-federation-config@0.7.0':
+    resolution: {integrity: sha512-B9dpO/7aTI1DAG6n6JIT0enRnN2Ed5JW8Uenf0yJ33KsqBk110y00wQ0IwPdHmK4AtNCjXTxkjc5k0DC52odJQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-config/0.7.0/cc5f427dd6e229755d41b36e81783559e1b988a8}
     peerDependencies:
       '@softarc/native-federation': '>=4.0.0'
 
@@ -2096,6 +2089,9 @@ packages:
 
   '@tn4consulting/shared-runtime-config@0.1.4':
     resolution: {integrity: sha512-gFSqm28XISQowq1maFjWuRNScXAE57EjRG4+KrpgDuQ0HTR1jMjQI0qWXySrf2/vBnyeZpZ0ATgnNG0Pr4UPrw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.4/df515d211b976c6d9fa401e83f34ff5cd07412e3}
+
+  '@tn4consulting/shared-ui-scds-core@1.0.0':
+    resolution: {integrity: sha512-ZgSH/g9P602QQqaToIc03skp0vQ1SAIHx4ST/xPtoekM5TLdaf/XwoABJmpGRzM48IHE21ddlPzCm9wC9UiVXg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds-core/1.0.0/8fa4561ca6ef3fe2ced1200e9f4d230a6b1b2492}
 
   '@tsconfig/node10@1.0.12':
     resolution: {integrity: sha512-UCYBaeFvM11aU2y3YPZ//O5Rhj+xKyzy7mvcIoAjASbigy8mHMryP5cK7dgjlz2hWxh1g5pLw084E0a/wlUSFQ==}
@@ -6947,10 +6943,6 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@gcds-core/components@1.4.0':
-    dependencies:
-      '@tanstack/table-core': 8.21.3
-
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -8032,8 +8024,6 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@tanstack/table-core@8.21.3': {}
-
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.29.7
@@ -8073,7 +8063,7 @@ snapshots:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
       '@angular/router': 22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2)
 
-  '@tn4consulting/shared-federation-config@0.6.0(@softarc/native-federation@4.3.2(typescript@6.0.3))':
+  '@tn4consulting/shared-federation-config@0.7.0(@softarc/native-federation@4.3.2(typescript@6.0.3))':
     dependencies:
       '@softarc/native-federation': 4.3.2(typescript@6.0.3)
 
@@ -8086,6 +8076,8 @@ snapshots:
       react: 19.2.8
 
   '@tn4consulting/shared-runtime-config@0.1.4': {}
+
+  '@tn4consulting/shared-ui-scds-core@1.0.0': {}
 
   '@tsconfig/node10@1.0.12': {}
 

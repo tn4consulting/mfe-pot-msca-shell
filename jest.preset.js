@@ -2,11 +2,10 @@ const nxPreset = require('@nx/jest/preset').default;
 
 module.exports = {
   ...nxPreset,
-  // @angular-architects/native-federation, @softarc/native-federation, and
-  // @gcds-core/* ship ESM-only (package.json "type": "module") even on
-  // their .js files, so Jest's default node_modules exclusion can't parse
-  // them without this.
+  // @softarc/native-federation ships ESM-only (package.json "type":
+  // "module") even on its .js files, so Jest's default node_modules
+  // exclusion can't parse it without this.
   transformIgnorePatterns: [
-    'node_modules/(?!\\.pnpm|(@angular-architects|@softarc|@gcds-core|@jsverse)/|.*\\.mjs$)',
+    'node_modules/(?!\\.pnpm|(@softarc|@jsverse)/|.*\\.mjs$)',
   ],
 };

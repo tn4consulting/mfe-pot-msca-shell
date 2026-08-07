@@ -2,6 +2,7 @@ import { withNativeFederation } from '@softarc/native-federation/config';
 import {
   sharedFederationRuntimeDependency,
   sharedReactFederationDependencies,
+  sharedUiScdsCoreFederationDependency,
 } from '@tn4consulting/shared-federation-config/react';
 
 // React host -- imports the framework-agnostic core's config API
@@ -16,7 +17,13 @@ import {
 // Context identity crossing the federation boundary, which requires every
 // participant to resolve the exact same module instance; see
 // shared-federation-config/react's own doc on why this is a separate
-// export from sharedReactFederationDependencies).
+// export from sharedReactFederationDependencies), plus
+// @tn4consulting/shared-ui-scds-core (this app renders its
+// scds-header/scds-sidebar/scds-footer/etc. app-frame components directly
+// -- GCDS has been removed from the family entirely, and shell never
+// shared it in the first place despite rendering it directly; sharing
+// SCDS here closes that same gap now that shell is a heavy direct
+// consumer).
 //
 // Deliberately NOT sharing '@softarc/native-federation' itself. It's
 // tempting (a remote calling loadRemoteModule to embed another remote's
@@ -37,6 +44,7 @@ export default withNativeFederation({
   shared: {
     ...sharedReactFederationDependencies,
     ...sharedFederationRuntimeDependency,
+    ...sharedUiScdsCoreFederationDependency,
   },
 
   // `ignoreUnusedDeps` (native federation's default: true) statically
