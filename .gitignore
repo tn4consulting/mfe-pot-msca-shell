@@ -61,7 +61,7 @@ Thumbs.db
 .firebase
 
 # Helm dependency archives -- packaged from the platform repo's library
-# charts via a local file:// path (see charts/shell/Chart.yaml); commit
+# charts via a local file:// path (see charts/msca-shell/Chart.yaml); commit
 # would drift stale relative to the source, so regenerate on demand with
 # `helm dependency update` instead.
 charts/*/charts/

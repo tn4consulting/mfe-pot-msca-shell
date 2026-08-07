@@ -27,11 +27,11 @@ COPY tools ./tools
 RUN --mount=type=secret,id=npm_token \
     --mount=type=cache,target=/root/.local/share/pnpm/store \
     NODE_AUTH_TOKEN="$(cat /run/secrets/npm_token)" pnpm install --frozen-lockfile --network-concurrency=4
-RUN pnpm exec nx build shell --configuration=production
+RUN pnpm exec nx build msca-shell --configuration=production
 
 FROM nginx:alpine AS runtime
 COPY tools/docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY tools/docker/frontend-entrypoint.sh /docker-entrypoint.d/40-mfe-pot-env.sh
 RUN chmod +x /docker-entrypoint.d/40-mfe-pot-env.sh
-COPY --from=build /workspace/dist/apps/shell/browser /usr/share/nginx/html
+COPY --from=build /workspace/dist/apps/msca-shell/browser /usr/share/nginx/html
 EXPOSE 80
