@@ -111,7 +111,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
               </AppNavLink>
               <InertNavLink iconName="finance">Taxes / Financial</InertNavLink>
               <scds-nav-group label="Employment" icon-name="briefcase">
-                <AppNavLink href="/employment-life-events">{t('nav.employmentLifeEvents')}</AppNavLink>
+                <AppNavLink href="/job-loss">{t('nav.employmentLifeEvents')}</AppNavLink>
                 <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
                 <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
               </scds-nav-group>

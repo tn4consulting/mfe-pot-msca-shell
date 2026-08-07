@@ -15,16 +15,21 @@ import { AuthCallbackPage } from './AuthCallbackPage';
 import { RequireSession } from './RequireSession';
 
 /**
- * dashboard is the CONSUMER of both widget loaders below -- its own
- * (still-Angular, at time of writing) `App` embeds job-bank's applications
- * widget and employment-insurance's reporting-status widget inline in the
- * overview. Until dashboard itself converts to React (a later phase of
- * the family-wide migration), `RemoteRouteHost` here can't actually mount
- * dashboard's exported `App` at all -- it's an Angular component class,
- * not a React one -- so this route degrades to RemoteRouteHost's own
- * error-boundary fallback. The Context wiring below is still correct and
- * complete: once dashboard converts, this route needs zero further
- * changes.
+ * Both widget loaders below are wired here but currently unconsumed --
+ * dashboard-mfe (React, like every app in the family now; the whole
+ * Angular-to-React migration is done) used to embed job-bank's
+ * applications widget and employment-insurance's reporting-status widget
+ * inline in its own overview, but dropped both embeds once
+ * docs/msca-screenshots/dashboard.png showed neither tile actually
+ * belongs on the dashboard page -- each now renders directly on its own
+ * owning app's page instead (job-bank-mfe's/employment-insurance-mfe's own
+ * App.tsx; see mfe-pot-dashboard-mfe's own CLAUDE.md). `RemoteRouteHost`
+ * mounts dashboard-mfe's real exported `App` directly, no degraded
+ * fallback. The Provider wiring stays in place regardless -- unconsumed
+ * but still real and buildable, in case a future consumer wants it, same
+ * "kept even though nothing reads it today" reasoning as the federation
+ * exposes themselves (see job-bank-mfe's/employment-insurance-mfe's own
+ * federation.config.mjs).
  */
 function DashboardRoute() {
   const loadRemoteModule = useRemoteModuleLoader();
@@ -55,13 +60,16 @@ function DashboardRoute() {
 }
 
 /**
- * employment-life-events is the CONSUMER of dashboard's payment-history
- * widget. Same transitional caveat as above: dashboard is still Angular,
- * so this Context resolves to an Angular component class until dashboard
- * converts -- and employment-life-events' own route below can't render at
- * all yet either (it's also still Angular), so neither side of this
- * wiring is reachable today. Wired correctly now regardless, per the same
- * "zero further changes once both sides convert" reasoning.
+ * employment-life-events is the CONSUMER of three widgets: dashboard's
+ * payment-history widget (original), plus job-bank's job-applications
+ * widget and employment-insurance's reporting-status widget (added for
+ * its guided-journey checklist, which mounts these two to derive real
+ * "have you actually applied / are you actually up to date on reporting"
+ * completion state -- see employment-life-events-mfe's own GuidedJourney.tsx
+ * and its JobSearchChecklistItem/EiChecklistItems). Same host-mediated
+ * pattern as `DashboardRoute` above, just wired to a different consuming
+ * route -- there's no conflict in the same Context also being provided
+ * there; each route tree gets its own Provider instance.
  */
 function EmploymentLifeEventsRoute() {
   const loadRemoteModule = useRemoteModuleLoader();
@@ -73,7 +81,21 @@ function EmploymentLifeEventsRoute() {
         return { component: widgetModule['DashboardFeaturePaymentHistory'] as ComponentType<Record<string, unknown>> };
       }}
     >
-      <RemoteRouteHost remoteName="employment-life-events-mfe" />
+      <JobApplicationsWidgetLoaderContext.Provider
+        value={async () => {
+          const widgetModule = await loadRemoteModule('job-bank-mfe', './JobApplicationsWidget');
+          return { component: widgetModule['JobApplicationsList'] as ComponentType<Record<string, unknown>> };
+        }}
+      >
+        <EiReportingStatusWidgetLoaderContext.Provider
+          value={async () => {
+            const widgetModule = await loadRemoteModule('employment-insurance-mfe', './EiReportingStatusWidget');
+            return { component: widgetModule['ReportingStatus'] as ComponentType<Record<string, unknown>> };
+          }}
+        >
+          <RemoteRouteHost remoteName="employment-life-events-mfe" />
+        </EiReportingStatusWidgetLoaderContext.Provider>
+      </JobApplicationsWidgetLoaderContext.Provider>
     </PaymentHistoryWidgetLoaderContext.Provider>
   );
 }
@@ -92,7 +114,7 @@ export function AppRoutes() {
         }
       />
       <Route
-        path="/employment-life-events"
+        path="/job-loss"
         element={
           <RequireSession>
             <EmploymentLifeEventsRoute />

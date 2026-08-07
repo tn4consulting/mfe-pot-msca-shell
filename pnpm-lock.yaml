@@ -25,8 +25,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0(@softarc/native-federation@4.3.2(typescript@6.0.3))
       '@tn4consulting/shared-federation-runtime':
-        specifier: ^1.0.1
-        version: 1.0.1(react@19.2.8)
+        specifier: ^1.0.2
+        version: 1.0.2(react@19.2.8)
       '@tn4consulting/shared-i18n':
         specifier: ^1.1.0
         version: 1.1.0(react@19.2.8)
@@ -34,8 +34,8 @@ importers:
         specifier: ^0.1.4
         version: 0.1.4
       '@tn4consulting/shared-ui-scds-core':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.0
+        version: 1.1.0
       es-module-shims:
         specifier: ^2.8.0
         version: 2.8.4
@@ -2077,8 +2077,8 @@ packages:
     peerDependencies:
       '@softarc/native-federation': '>=4.0.0'
 
-  '@tn4consulting/shared-federation-runtime@1.0.1':
-    resolution: {integrity: sha512-S43HlLzriscgJantQA6rx1pd2S+iO+3f7rDEc5zTZFns3rybtRlMuBwQgC6Cy52U5AocgRrHMZgs41wtx9zeJg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-runtime/1.0.1/6d02e3cf385dc591c61b2b6d79ed3a30d1f27e23}
+  '@tn4consulting/shared-federation-runtime@1.0.2':
+    resolution: {integrity: sha512-CvupDBqGDkVD4NirwXa9vBwnMe/6J6UOJ4gV9r+8xamDVVANDmONh2KgCxA0yibTC0FKnUz445VoSbySmiDsiQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-runtime/1.0.2/d1b7050eb14e1608f2e4d88ed646b5971777a5b3}
     peerDependencies:
       react: '>=19.0.0'
 
@@ -2090,8 +2090,8 @@ packages:
   '@tn4consulting/shared-runtime-config@0.1.4':
     resolution: {integrity: sha512-gFSqm28XISQowq1maFjWuRNScXAE57EjRG4+KrpgDuQ0HTR1jMjQI0qWXySrf2/vBnyeZpZ0ATgnNG0Pr4UPrw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.4/df515d211b976c6d9fa401e83f34ff5cd07412e3}
 
-  '@tn4consulting/shared-ui-scds-core@1.0.0':
-    resolution: {integrity: sha512-ZgSH/g9P602QQqaToIc03skp0vQ1SAIHx4ST/xPtoekM5TLdaf/XwoABJmpGRzM48IHE21ddlPzCm9wC9UiVXg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds-core/1.0.0/8fa4561ca6ef3fe2ced1200e9f4d230a6b1b2492}
+  '@tn4consulting/shared-ui-scds-core@1.1.0':
+    resolution: {integrity: sha512-owVHS0OKfqgSHiKgTtm1VQTlnjxJ3sZviYMZmSmvifC3WbCZ6EX0EwaD2tkT1cmUQzFBN3Da0rNP35kTEWxRog==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-ui-scds-core/1.1.0/32330443f1e89a5a0cd16c5118846069c6baf29c}
 
   '@tsconfig/node10@1.0.12':
     resolution: {integrity: sha512-UCYBaeFvM11aU2y3YPZ//O5Rhj+xKyzy7mvcIoAjASbigy8mHMryP5cK7dgjlz2hWxh1g5pLw084E0a/wlUSFQ==}
@@ -2773,8 +2773,8 @@ packages:
   caniuse-lite@1.0.30001806:
     resolution: {integrity: sha512-72Cuvd95zbSYPKq6Fhg8eDJRlzgWDf7/mtoZv6Qe/DYNCEBdNxoA3+rZAU2ZhGCpZlns3EssFavaZomckT5Uuw==}
 
-  caniuse-lite@1.0.30001807:
-    resolution: {integrity: sha512-daRXJ9EB/rdRgu7kV+TTl1YUKtlsMWblPl2sLnpg9DZae16QCegol6A1SmCE31Lm9mXC1sRWGt/krouH+/dl7Q==}
+  caniuse-lite@1.0.30001809:
+    resolution: {integrity: sha512-xxWVywk6a6Arlk+hymeycyn/VgqEfLDxupvhH/xiY5SJ/18kmi9o6MiO320DCUzypORHLtvh0I4i04tUhCNHNQ==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -4384,8 +4384,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  nanoid@3.3.17:
-    resolution: {integrity: sha512-xQLf0A3HOMlgHq0n247/LRuAOYmB7dXJ/DvAxGvsSBij45XtBSmQycu+F8ODbHwns/XyFZagyL1+J0Offw1E0g==}
+  nanoid@3.3.18:
+    resolution: {integrity: sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -4822,8 +4822,8 @@ packages:
     peerDependencies:
       postcss: ^8.5.13
 
-  postcss-selector-parser@7.1.4:
-    resolution: {integrity: sha512-HeP7D2wyhkR+XaK6v4W8oRF62Dsz4flyuczALJp61GckGm42u1saSSJ/0auvcBqxs3jMRFEcPK34At/0JBKdOg==}
+  postcss-selector-parser@7.1.5:
+    resolution: {integrity: sha512-KvvtD7SrlBP7dlgkBghEE3r84CABm5SmV2aNcG4oCA+qDnJ/tvKonFVvwWAyyWUEwxuNawdfEAZKP9zM3oZ2Uw==}
     engines: {node: '>=4'}
 
   postcss-svgo@7.1.3:
@@ -8067,7 +8067,7 @@ snapshots:
     dependencies:
       '@softarc/native-federation': 4.3.2(typescript@6.0.3)
 
-  '@tn4consulting/shared-federation-runtime@1.0.1(react@19.2.8)':
+  '@tn4consulting/shared-federation-runtime@1.0.2(react@19.2.8)':
     dependencies:
       react: 19.2.8
 
@@ -8077,7 +8077,7 @@ snapshots:
 
   '@tn4consulting/shared-runtime-config@0.1.4': {}
 
-  '@tn4consulting/shared-ui-scds-core@1.0.0': {}
+  '@tn4consulting/shared-ui-scds-core@1.1.0': {}
 
   '@tsconfig/node10@1.0.12': {}
 
@@ -8611,7 +8611,7 @@ snapshots:
   autoprefixer@10.5.4(postcss@8.5.26):
     dependencies:
       browserslist: 4.28.7
-      caniuse-lite: 1.0.30001807
+      caniuse-lite: 1.0.30001809
       fraction.js: 5.3.4
       picocolors: 1.1.1
       postcss: 8.5.26
@@ -8869,14 +8869,14 @@ snapshots:
   caniuse-api@3.0.0:
     dependencies:
       browserslist: 4.28.7
-      caniuse-lite: 1.0.30001807
+      caniuse-lite: 1.0.30001809
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     optional: true
 
   caniuse-lite@1.0.30001806: {}
 
-  caniuse-lite@1.0.30001807:
+  caniuse-lite@1.0.30001809:
     optional: true
 
   chalk@4.1.2:
@@ -11046,7 +11046,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  nanoid@3.3.17:
+  nanoid@3.3.18:
     optional: true
 
   napi-postinstall@0.3.4: {}
@@ -11455,7 +11455,7 @@ snapshots:
   postcss-calc@10.1.1(postcss@8.5.26):
     dependencies:
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -11478,7 +11478,7 @@ snapshots:
   postcss-discard-comments@7.0.8(postcss@8.5.26):
     dependencies:
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   postcss-discard-duplicates@7.0.4(postcss@8.5.26):
@@ -11529,7 +11529,7 @@ snapshots:
       caniuse-api: 3.0.0
       cssnano-utils: 5.0.3(postcss@8.5.26)
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   postcss-minify-font-values@7.0.3(postcss@8.5.26):
@@ -11560,7 +11560,7 @@ snapshots:
       caniuse-api: 3.0.0
       cssesc: 3.0.0
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   postcss-modules-extract-imports@3.1.0(postcss@8.5.26):
@@ -11572,14 +11572,14 @@ snapshots:
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.26)
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
       postcss-value-parser: 4.2.0
     optional: true
 
   postcss-modules-scope@3.2.1(postcss@8.5.26):
     dependencies:
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   postcss-modules-values@4.0.0(postcss@8.5.26):
@@ -11662,7 +11662,7 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-selector-parser@7.1.4:
+  postcss-selector-parser@7.1.5:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
@@ -11678,7 +11678,7 @@ snapshots:
   postcss-unique-selectors@7.0.7(postcss@8.5.26):
     dependencies:
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   postcss-value-parser@4.2.0:
@@ -11686,7 +11686,7 @@ snapshots:
 
   postcss@8.5.26:
     dependencies:
-      nanoid: 3.3.17
+      nanoid: 3.3.18
       picocolors: 1.1.1
       source-map-js: 1.2.1
     optional: true
@@ -12264,7 +12264,7 @@ snapshots:
     dependencies:
       browserslist: 4.28.7
       postcss: 8.5.26
-      postcss-selector-parser: 7.1.4
+      postcss-selector-parser: 7.1.5
     optional: true
 
   supports-color@7.2.0:
