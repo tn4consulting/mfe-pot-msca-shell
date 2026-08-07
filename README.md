@@ -88,7 +88,7 @@ directly.
 ## Where to go next
 
 - [`CLAUDE.md`](./CLAUDE.md) — this repo's specific gotchas (why `main.ts`
-  can't import shared packages, GCDS federation-sharing, Renovate).
+  can't import shared packages, SCDS federation-sharing, Renovate).
 - [`../mfe-pot-platform/CLAUDE.md`](../mfe-pot-platform/CLAUDE.md) — the
   full architecture reference for the whole family.
 - [`../mfe-pot-platform/README.md`](../mfe-pot-platform/README.md) —
