@@ -102,44 +102,46 @@ export function AppFrame({ children }: { children: ReactNode }) {
         )}
       </scds-header>
 
-      {session && (
-        <scds-sidebar open={sidebarOpen} label="Site menu" onScdsClose={() => setSidebarOpen(false)}>
-          <div slot="primary">
-            <AppNavLink href="/dashboard" iconName="home">
-              {t('nav.dashboard')}
-            </AppNavLink>
-            <InertNavLink iconName="finance">Taxes / Financial</InertNavLink>
-            <scds-nav-group label="Employment" icon-name="briefcase">
-              <AppNavLink href="/employment-life-events">{t('nav.employmentLifeEvents')}</AppNavLink>
-              <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
-              <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
-            </scds-nav-group>
-            <InertNavLink iconName="heart">Health</InertNavLink>
-            <InertNavLink iconName="activity">Recreation / Sport</InertNavLink>
-            <InertNavLink iconName="plane">Travel</InertNavLink>
-            <InertNavLink iconName="book">Education</InertNavLink>
-          </div>
-          <scds-nav-divider slot="secondary"></scds-nav-divider>
-          <div slot="secondary">
-            <InertNavLink iconName="message">Messages</InertNavLink>
-            <InertNavLink iconName="document">Documents</InertNavLink>
-            <scds-nav-group label={`Account - ${session.name}`} icon-name="user">
-              <InertNavLink>My Profile</InertNavLink>
-              <InertNavLink>Preferences</InertNavLink>
-              <InertNavLink>Authorizations</InertNavLink>
-              <InertNavLink>Security</InertNavLink>
-            </scds-nav-group>
-            <InertNavLink iconName="user-check">{`Act on behalf - ${session.name}`}</InertNavLink>
-            <scds-nav-link icon-name="log-out" onClick={signOut}>
-              Log Out
-            </scds-nav-link>
-          </div>
-        </scds-sidebar>
-      )}
+      <div className="scds-layout">
+        {session && (
+          <scds-sidebar open={sidebarOpen} label="Site menu" onScdsClose={() => setSidebarOpen(false)}>
+            <div slot="primary">
+              <AppNavLink href="/dashboard" iconName="home">
+                {t('nav.dashboard')}
+              </AppNavLink>
+              <InertNavLink iconName="finance">Taxes / Financial</InertNavLink>
+              <scds-nav-group label="Employment" icon-name="briefcase">
+                <AppNavLink href="/employment-life-events">{t('nav.employmentLifeEvents')}</AppNavLink>
+                <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
+                <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
+              </scds-nav-group>
+              <InertNavLink iconName="heart">Health</InertNavLink>
+              <InertNavLink iconName="activity">Recreation / Sport</InertNavLink>
+              <InertNavLink iconName="plane">Travel</InertNavLink>
+              <InertNavLink iconName="book">Education</InertNavLink>
+            </div>
+            <scds-nav-divider slot="secondary"></scds-nav-divider>
+            <div slot="secondary">
+              <InertNavLink iconName="message">Messages</InertNavLink>
+              <InertNavLink iconName="document">Documents</InertNavLink>
+              <scds-nav-group label={`Account - ${session.name}`} icon-name="user">
+                <InertNavLink>My Profile</InertNavLink>
+                <InertNavLink>Preferences</InertNavLink>
+                <InertNavLink>Authorizations</InertNavLink>
+                <InertNavLink>Security</InertNavLink>
+              </scds-nav-group>
+              <InertNavLink iconName="user-check">{`Act on behalf - ${session.name}`}</InertNavLink>
+              <scds-nav-link icon-name="log-out" onClick={signOut}>
+                Log Out
+              </scds-nav-link>
+            </div>
+          </scds-sidebar>
+        )}
 
-      <main id="main-content">
-        <div className="scds-container">{children}</div>
-      </main>
+        <main id="main-content">
+          <div className="scds-container">{children}</div>
+        </main>
+      </div>
 
       {/* Footer links are decorative -- this PoT doesn't build out a real
           canada.ca global-footer sitemap -- but point at plausible,

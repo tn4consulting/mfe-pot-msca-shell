@@ -17,3 +17,29 @@ body {
   text-align: center;
 }
 
+/* scds-sidebar's own CSS (scds-sidebar.css) sets `.scds-sidebar-root {
+   position: sticky; align-self: flex-start; }` at its desktop breakpoint
+   (min-width: 48em) -- but `align-self` only has an effect inside a flex
+   container, and AppFrame.tsx renders <scds-sidebar> and <main> as plain
+   siblings with no such wrapper. Without this, the sidebar (height:
+   calc(100vh - header-height), ~900px on a typical desktop viewport)
+   sits in normal block flow above <main>, pushing all routed content
+   below the fold -- confirmed live: content renders correctly (present
+   in the DOM, real data), just scrolled out of view, reproducing exactly
+   at desktop widths and not at the sidebar's own mobile/off-canvas
+   breakpoint. 48em matches scds-sidebar.css's own hardcoded breakpoint
+   (a CSS custom property can't be used inside a media feature value, so
+   scds-sidebar.css hardcodes it too rather than referencing
+   --scds-breakpoint-sidebar). */
+@media (min-width: 48em) {
+  .scds-layout {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .scds-layout > main {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
