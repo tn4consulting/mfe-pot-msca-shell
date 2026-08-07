@@ -32,7 +32,7 @@ function DashboardRoute() {
   return (
     <JobApplicationsWidgetLoaderContext.Provider
       value={async () => {
-        const widgetModule = await loadRemoteModule('job-bank', './JobApplicationsWidget');
+        const widgetModule = await loadRemoteModule('job-bank-mfe', './JobApplicationsWidget');
         return { component: widgetModule['JobApplicationsList'] as ComponentType<Record<string, unknown>> };
       }}
     >
@@ -44,11 +44,11 @@ function DashboardRoute() {
           // loadRemoteModule's own return type is a plain
           // Record<string, unknown>, same as every other federated
           // module access in this file).
-          const widgetModule = await loadRemoteModule('employment-insurance', './EiReportingStatusWidget');
+          const widgetModule = await loadRemoteModule('employment-insurance-mfe', './EiReportingStatusWidget');
           return { component: widgetModule['ReportingStatus'] as ComponentType<Record<string, unknown>> };
         }}
       >
-        <RemoteRouteHost remoteName="dashboard" />
+        <RemoteRouteHost remoteName="dashboard-mfe" />
       </EiReportingStatusWidgetLoaderContext.Provider>
     </JobApplicationsWidgetLoaderContext.Provider>
   );
@@ -69,11 +69,11 @@ function EmploymentLifeEventsRoute() {
   return (
     <PaymentHistoryWidgetLoaderContext.Provider
       value={async () => {
-        const widgetModule = await loadRemoteModule('dashboard', './PaymentHistoryWidget');
+        const widgetModule = await loadRemoteModule('dashboard-mfe', './PaymentHistoryWidget');
         return { component: widgetModule['DashboardFeaturePaymentHistory'] as ComponentType<Record<string, unknown>> };
       }}
     >
-      <RemoteRouteHost remoteName="employment-life-events" />
+      <RemoteRouteHost remoteName="employment-life-events-mfe" />
     </PaymentHistoryWidgetLoaderContext.Provider>
   );
 }
@@ -103,7 +103,7 @@ export function AppRoutes() {
         path="/job-bank"
         element={
           <RequireSession>
-            <RemoteRouteHost remoteName="job-bank" />
+            <RemoteRouteHost remoteName="job-bank-mfe" />
           </RequireSession>
         }
       />
@@ -111,7 +111,7 @@ export function AppRoutes() {
         path="/employment-insurance"
         element={
           <RequireSession>
-            <RemoteRouteHost remoteName="employment-insurance" />
+            <RemoteRouteHost remoteName="employment-insurance-mfe" />
           </RequireSession>
         }
       />

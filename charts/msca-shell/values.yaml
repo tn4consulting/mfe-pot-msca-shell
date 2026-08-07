@@ -31,10 +31,10 @@ frontend:
     # is a public hostname and not in-cluster Service DNS.
     mockIdpBaseUrl: "http://mock-idp.mfe-pot.local"
     remotes:
-      job-bank: "http://job-bank-mfe.mfe-pot.local/remoteEntry.json"
-      employment-insurance: "http://employment-insurance-mfe.mfe-pot.local/remoteEntry.json"
-      dashboard: "http://dashboard-mfe.mfe-pot.local/remoteEntry.json"
-      employment-life-events: "http://employment-life-events-mfe.mfe-pot.local/remoteEntry.json"
+      job-bank-mfe: "http://job-bank-mfe.mfe-pot.local/remoteEntry.json"
+      employment-insurance-mfe: "http://employment-insurance-mfe.mfe-pot.local/remoteEntry.json"
+      dashboard-mfe: "http://dashboard-mfe.mfe-pot.local/remoteEntry.json"
+      employment-life-events-mfe: "http://employment-life-events-mfe.mfe-pot.local/remoteEntry.json"
 
 ingress:
   host: msca.mfe-pot.local
