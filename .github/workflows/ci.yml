@@ -129,9 +129,9 @@ jobs:
           # ingress-nginx's own reconciliation loop to pick up the new
           # Ingress resource -- give it a few seconds before asserting.
           for i in $(seq 1 30); do
-            status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: msca-shell.mfe-pot.local" http://localhost/ || echo 000)
+            status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: msca.mfe-pot.local" http://localhost/ || echo 000)
             [ "$status" = "200" ] && break
             sleep 2
           done
-          curl -sf -H "Host: msca-shell.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
-          curl -sf -H "Host: msca-shell.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'
+          curl -sf -H "Host: msca.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
+          curl -sf -H "Host: msca.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'

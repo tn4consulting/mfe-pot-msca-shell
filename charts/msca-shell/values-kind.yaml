@@ -10,5 +10,5 @@ frontend:
     pullPolicy: Never
 
 ingress:
-  host: msca-shell.mfe-pot.local
+  host: msca.mfe-pot.local
   className: nginx

@@ -79,10 +79,10 @@ a `file://../../../mfe-pot-platform/charts/...` relative path). Add to
 `/etc/hosts`:
 
 ```
-127.0.0.1 msca-shell.mfe-pot.local
+127.0.0.1 msca.mfe-pot.local
 ```
 
-Then `curl -H "Host: msca-shell.mfe-pot.local" http://localhost/` or browse there
+Then `curl -H "Host: msca.mfe-pot.local" http://localhost/` or browse there
 directly.
 
 ## Where to go next
