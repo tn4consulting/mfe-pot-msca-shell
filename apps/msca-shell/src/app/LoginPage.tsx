@@ -10,7 +10,7 @@ import { assetBaseUrl } from './asset-base-url';
 import { computePkceChallenge, generateRandomToken, storeAuthFlight } from './auth-flight';
 import { redirectTo } from './browser-redirect';
 
-const CLIENT_ID = 'mfe-pot-shell';
+const CLIENT_ID = 'mfe-pot-msca-shell';
 
 export function LoginPage() {
   const navigate = useNavigate();

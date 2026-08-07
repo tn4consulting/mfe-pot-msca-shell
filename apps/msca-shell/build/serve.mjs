@@ -17,22 +17,22 @@ import { createRequire } from 'node:module';
 import { extname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const outputPath = 'dist/apps/shell/browser';
-const port = Number(process.env.SHELL_DEV_PORT ?? 4200);
+const outputPath = 'dist/apps/msca-shell/browser';
+const port = Number(process.env.MSCA_SHELL_DEV_PORT ?? 4200);
 
 await rm(outputPath, { recursive: true, force: true });
 await mkdir(outputPath, { recursive: true });
-await cp('apps/shell/public', outputPath, { recursive: true });
-await cp('apps/shell/src/index.html', join(outputPath, 'index.html'));
+await cp('apps/msca-shell/public', outputPath, { recursive: true });
+await cp('apps/msca-shell/src/index.html', join(outputPath, 'index.html'));
 await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.js'));
 
 // See build.mjs's equivalent comment: this keeps `needsCommonJsPlugin: true`
 // (fixes the shared react chunk missing named exports) without
 // `reactFrameworkPlugin()`'s stale React-19 `fileReplacements` paths.
-await runEsBuildBuilder('apps/shell/federation.config.mjs', {
+await runEsBuildBuilder('apps/msca-shell/federation.config.mjs', {
   workspaceRoot: process.cwd(),
   outputPath,
-  tsConfig: 'apps/shell/tsconfig.app.json',
+  tsConfig: 'apps/msca-shell/tsconfig.app.json',
   packageJson: 'package.json',
   dev: true,
   watch: true,
@@ -53,7 +53,7 @@ await runEsBuildBuilder('apps/shell/federation.config.mjs', {
 // the widget-loader Context objects, and every cross-remote widget
 // consumer's `useContext` call reads that copy's `undefined` default).
 const mainCtx = await esbuild.context({
-  entryPoints: ['apps/shell/src/main.tsx'],
+  entryPoints: ['apps/msca-shell/src/main.tsx'],
   outdir: outputPath,
   bundle: true,
   splitting: true,
@@ -97,5 +97,5 @@ createServer(async (req, res) => {
     res.end('Not found');
   }
 }).listen(port, () => {
-  console.log(`shell dev server listening on http://localhost:${port}`);
+  console.log(`msca-shell dev server listening on http://localhost:${port}`);
 });

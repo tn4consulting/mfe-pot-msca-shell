@@ -16,7 +16,7 @@ export default [
           enforceBuildableLibDependency: true,
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           depConstraints: [
-            { sourceTag: 'scope:shell', onlyDependOnLibsWithTags: ['scope:shell'] },
+            { sourceTag: 'scope:msca-shell', onlyDependOnLibsWithTags: ['scope:msca-shell'] },
           ],
         },
       ],

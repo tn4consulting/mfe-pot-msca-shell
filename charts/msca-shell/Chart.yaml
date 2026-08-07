@@ -1,9 +1,9 @@
 apiVersion: v2
-name: shell
+name: msca-shell
 description: >-
-  Deploys the shell frontend as a Helm release, independent of every
-  other mfe-pot app -- `helm upgrade --install shell ./charts/shell`
-  touches only this. Shell has no co-located BFF (it's a pure federation
+  Deploys the MSCA shell frontend as a Helm release, independent of every
+  other mfe-pot app -- `helm upgrade --install msca-shell ./charts/msca-shell`
+  touches only this. msca-shell has no co-located BFF (it's a pure federation
   host), so unlike every other extracted app's chart this one depends
   only on mfe-frontend-lib, not mfe-backend-lib. Extracted into this repo
   per Phase 1 of the platform repo's

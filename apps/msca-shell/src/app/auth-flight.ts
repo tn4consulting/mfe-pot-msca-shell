@@ -51,7 +51,7 @@ export interface PkceChallenge {
  * falls back to `plain` (code_challenge === code_verifier) when
  * `crypto.subtle` isn't available -- SubtleCrypto only exists in a secure
  * context (HTTPS, or the literal hostname `localhost`), so a plain-HTTP
- * deployment on a hostname like `shell.mfe-pot.local` has none at all
+ * deployment on a hostname like `msca-shell.mfe-pot.local` has none at all
  * (confirmed the hard way: `TypeError: Cannot read properties of undefined
  * (reading 'digest')` clicking sign-in there). `plain` is RFC 7636's own
  * documented fallback for exactly this case, not a workaround invented

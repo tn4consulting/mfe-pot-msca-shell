@@ -17,7 +17,7 @@ import { initFederation } from '@softarc/native-federation-orchestrator';
  *
  * The ambient `Window.__mfePotEnv` type here must match
  * `shared-runtime-config`'s own declaration exactly (`Record<string,
- * unknown> | undefined`) -- `apps/shell/src/runtime-config.ts` (used by
+ * unknown> | undefined`) -- `apps/msca-shell/src/runtime-config.ts` (used by
  * the lazy-loaded LoginPage/AuthCallbackPage routes, which don't hit this
  * file's bare-specifier constraint) imports that package too, and
  * TypeScript requires identical types across merged ambient declarations

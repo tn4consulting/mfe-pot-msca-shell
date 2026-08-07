@@ -39,7 +39,7 @@ import {
 // Contexts in shared-federation-runtime) rather than having remotes call
 // loadRemoteModule on each other directly.
 export default withNativeFederation({
-  name: 'shell',
+  name: 'msca-shell',
 
   shared: {
     ...sharedReactFederationDependencies,

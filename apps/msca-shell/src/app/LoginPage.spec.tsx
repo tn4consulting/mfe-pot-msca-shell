@@ -49,7 +49,7 @@ describe('LoginPage', () => {
     expect(url.origin).toBe('http://localhost:3005');
     expect(url.pathname).toBe('/authorize');
     expect(url.searchParams.get('response_type')).toBe('code');
-    expect(url.searchParams.get('client_id')).toBe('mfe-pot-shell');
+    expect(url.searchParams.get('client_id')).toBe('mfe-pot-msca-shell');
     expect(url.searchParams.get('redirect_uri')).toBe(`${window.location.origin}/auth/callback`);
     expect(url.searchParams.get('code_challenge_method')).toBe('S256');
     expect(url.searchParams.get('state')).toBeTruthy();

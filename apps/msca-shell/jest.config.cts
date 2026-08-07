@@ -1,9 +1,9 @@
 module.exports = {
-  displayName: 'shell',
+  displayName: 'msca-shell',
   preset: '../../jest.preset.js',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/shell',
+  coverageDirectory: '../../coverage/apps/msca-shell',
   transform: {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',

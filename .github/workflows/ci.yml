@@ -46,7 +46,7 @@ jobs:
   # Stage 2: build the image, deploy this app's own Helm chart to an
   # ephemeral kind cluster, and confirm it actually serves -- the
   # kind-based validation stage from CLAUDE.md's Hosting section, now
-  # automated instead of the one-off manual run it started as. Shell has
+  # automated instead of the one-off manual run it started as. msca-shell has
   # no co-located BFF, so this job only builds/loads/checks one image,
   # unlike the other 3 extracted app repos.
   kind-validation:
@@ -56,9 +56,9 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v4
         with:
-          path: mfe-pot-shell
+          path: mfe-pot-msca-shell
 
-      # charts/shell/Chart.yaml's library-chart dependency resolves via a
+      # charts/msca-shell/Chart.yaml's library-chart dependency resolves via a
       # sibling-checkout-relative file:// path (see CLAUDE.md) -- checked
       # out alongside this repo so the same relative layout local dev
       # uses (both under one parent directory) holds here too. Public
@@ -71,12 +71,12 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Build shell image
+      - name: Build msca-shell image
         uses: docker/build-push-action@v6
         with:
-          context: mfe-pot-shell
-          file: mfe-pot-shell/apps/shell/Dockerfile
-          tags: mfe-pot-shell:kind
+          context: mfe-pot-msca-shell
+          file: mfe-pot-msca-shell/apps/msca-shell/Dockerfile
+          tags: mfe-pot-msca-shell:kind
           load: true
           secrets: |
             npm_token=${{ secrets.GITHUB_TOKEN }}
@@ -103,18 +103,18 @@ jobs:
             --timeout=120s
 
       - name: Load image into kind
-        run: kind load docker-image mfe-pot-shell:kind
+        run: kind load docker-image mfe-pot-msca-shell:kind
 
       - uses: azure/setup-helm@v4
 
       - name: helm dependency update
-        run: helm dependency update mfe-pot-shell/charts/shell
+        run: helm dependency update mfe-pot-msca-shell/charts/msca-shell
 
-      - name: helm install shell
+      - name: helm install msca-shell
         run: |
-          helm install shell mfe-pot-shell/charts/shell \
-            -f mfe-pot-shell/charts/shell/values.yaml \
-            -f mfe-pot-shell/charts/shell/values-kind.yaml \
+          helm install msca-shell mfe-pot-msca-shell/charts/msca-shell \
+            -f mfe-pot-msca-shell/charts/msca-shell/values.yaml \
+            -f mfe-pot-msca-shell/charts/msca-shell/values-kind.yaml \
             --wait --timeout 120s
 
       # Same checks proven manually (see CLAUDE.md/the platform repo's
@@ -129,9 +129,9 @@ jobs:
           # ingress-nginx's own reconciliation loop to pick up the new
           # Ingress resource -- give it a few seconds before asserting.
           for i in $(seq 1 30); do
-            status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: shell.mfe-pot.local" http://localhost/ || echo 000)
+            status=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: msca-shell.mfe-pot.local" http://localhost/ || echo 000)
             [ "$status" = "200" ] && break
             sleep 2
           done
-          curl -sf -H "Host: shell.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
-          curl -sf -H "Host: shell.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'
+          curl -sf -H "Host: msca-shell.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
+          curl -sf -H "Host: msca-shell.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'

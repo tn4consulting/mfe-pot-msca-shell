@@ -1,8 +1,8 @@
 frontend:
-  name: shell
+  name: msca-shell
   replicaCount: 1
   image:
-    repository: mfe-pot-shell
+    repository: mfe-pot-msca-shell
     tag: latest
     pullPolicy: IfNotPresent
   containerPort: 80
@@ -37,5 +37,5 @@ frontend:
       employment-life-events: "http://employment-life-events.mfe-pot.local/remoteEntry.json"
 
 ingress:
-  host: shell.mfe-pot.local
+  host: msca-shell.mfe-pot.local
   className: nginx

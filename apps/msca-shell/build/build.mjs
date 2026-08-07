@@ -14,7 +14,7 @@ import { join } from 'node:path';
 const require = createRequire(import.meta.url);
 
 const dev = process.argv.includes('--dev');
-const outputPath = 'dist/apps/shell/browser';
+const outputPath = 'dist/apps/msca-shell/browser';
 
 // Unlike the Angular executor this replaces, nothing here incrementally
 // diffs stale output against a fresh build -- a leftover file from a
@@ -29,8 +29,8 @@ await mkdir(outputPath, { recursive: true });
 // public/** (i18n JSON, favicon, env.js placeholder) and index.html by
 // hand. Must happen before the federation build so remoteEntry.json/
 // importmap.json (written into the same outputPath) aren't clobbered.
-await cp('apps/shell/public', outputPath, { recursive: true });
-await cp('apps/shell/src/index.html', join(outputPath, 'index.html'));
+await cp('apps/msca-shell/public', outputPath, { recursive: true });
+await cp('apps/msca-shell/src/index.html', join(outputPath, 'index.html'));
 
 // es-module-shims must be loaded via a plain classic <script> tag (see
 // index.html) -- it has to already be active before the `type="module-shim"`
@@ -80,10 +80,10 @@ await cp(require.resolve('es-module-shims'), join(outputPath, 'es-module-shims.j
 // this app's own main.tsx/bootstrap.tsx bundle below is still fully
 // minified. Accepting the naming quirk was judged lower-risk than
 // patching a third-party dependency to decouple minification from it.
-const result = await runEsBuildBuilder('apps/shell/federation.config.mjs', {
+const result = await runEsBuildBuilder('apps/msca-shell/federation.config.mjs', {
   workspaceRoot: process.cwd(),
   outputPath,
-  tsConfig: 'apps/shell/tsconfig.app.json',
+  tsConfig: 'apps/msca-shell/tsconfig.app.json',
   packageJson: 'package.json',
   dev: true,
   watch: false,
@@ -154,7 +154,7 @@ await result.close();
 // this external entry is what makes THIS bundle's own bare import resolve
 // through that entry instead of getting bundled inline a second time.
 await esbuild.build({
-  entryPoints: ['apps/shell/src/main.tsx'],
+  entryPoints: ['apps/msca-shell/src/main.tsx'],
   outdir: outputPath,
   bundle: true,
   splitting: true,
@@ -172,4 +172,4 @@ await esbuild.build({
   },
 });
 
-console.log(`shell built to ${outputPath} (${dev ? 'development' : 'production'})`);
+console.log(`msca-shell built to ${outputPath} (${dev ? 'development' : 'production'})`);

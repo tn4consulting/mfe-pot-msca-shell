@@ -5,10 +5,10 @@
 # pullPolicy: Never skips any registry round-trip entirely.
 frontend:
   image:
-    repository: mfe-pot-shell
+    repository: mfe-pot-msca-shell
     tag: kind
     pullPolicy: Never
 
 ingress:
-  host: shell.mfe-pot.local
+  host: msca-shell.mfe-pot.local
   className: nginx

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds shell's image, spins up (or reuses) a local kind cluster with
+# Builds msca-shell's image, spins up (or reuses) a local kind cluster with
 # ingress-nginx, and helm-upgrades this app's chart onto it -- the local
 # equivalent of the kind-validation stage in .github/workflows/ci.yml.
 set -euo pipefail
@@ -8,7 +8,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 CLUSTER_NAME="${CLUSTER_NAME:-kind}"
 PLATFORM_DIR=../mfe-pot-platform
-HOSTNAME=shell.mfe-pot.local
+HOSTNAME=msca-shell.mfe-pot.local
 
 if [ ! -d "$PLATFORM_DIR" ]; then
   echo "error: expected mfe-pot-platform checked out as a sibling at $PLATFORM_DIR (see ../mfe-pot.code-workspace)" >&2
@@ -41,22 +41,22 @@ fi
 
 export DOCKER_BUILDKIT=1
 
-echo "==> Building shell image..."
+echo "==> Building msca-shell image..."
 docker build \
   --secret id=npm_token,src="$token_file" \
-  -t mfe-pot-shell:kind \
-  -f apps/shell/Dockerfile .
+  -t mfe-pot-msca-shell:kind \
+  -f apps/msca-shell/Dockerfile .
 
 echo "==> Loading image into kind..."
-kind load docker-image mfe-pot-shell:kind --name "$CLUSTER_NAME"
+kind load docker-image mfe-pot-msca-shell:kind --name "$CLUSTER_NAME"
 
 echo "==> Updating Helm chart dependencies..."
-helm dependency update charts/shell
+helm dependency update charts/msca-shell
 
-echo "==> Deploying shell..."
-helm upgrade --install shell charts/shell \
-  -f charts/shell/values.yaml \
-  -f charts/shell/values-kind.yaml \
+echo "==> Deploying msca-shell..."
+helm upgrade --install msca-shell charts/msca-shell \
+  -f charts/msca-shell/values.yaml \
+  -f charts/msca-shell/values-kind.yaml \
   --wait --timeout 120s
 
 # values-kind.yaml pins a static image tag with pullPolicy: Never, so a
@@ -66,8 +66,8 @@ helm upgrade --install shell charts/shell \
 # content indefinitely (confirmed the hard way: a redeploy silently kept
 # serving a pre-fix JS bundle). Force it explicitly every run.
 echo "==> Restarting deployment to pick up the freshly built image..."
-kubectl rollout restart deployment/shell
-kubectl rollout status deployment/shell --timeout=60s
+kubectl rollout restart deployment/msca-shell
+kubectl rollout status deployment/msca-shell --timeout=60s
 
 echo "==> Waiting for ingress..."
 status=000
@@ -77,9 +77,9 @@ for i in $(seq 1 30); do
   sleep 2
 done
 if [ "$status" != "200" ]; then
-  echo "warning: shell isn't answering with 200 yet (last status: $status). Check with:" >&2
+  echo "warning: msca-shell isn't answering with 200 yet (last status: $status). Check with:" >&2
   echo "  kubectl get pods,ingress" >&2
   exit 1
 fi
 
-echo "==> shell is up: curl -H \"Host: $HOSTNAME\" http://localhost/"
+echo "==> msca-shell is up: curl -H \"Host: $HOSTNAME\" http://localhost/"
