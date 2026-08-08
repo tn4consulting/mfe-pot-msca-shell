@@ -224,8 +224,8 @@ jobs:
         run: |
           set -eu
           for i in $(seq 1 60); do
-            status=$(curl -s -o /dev/null -w '%{http_code}' https://msca.aws.tn4consulting.com/ || echo 000)
+            status=$(curl -sk -o /dev/null -w '%{http_code}' https://msca.aws.tn4consulting.com/ || echo 000)
             [ "$status" = "200" ] && break
             sleep 5
           done
-          curl -sf https://msca.aws.tn4consulting.com/ | grep -qi '<script src="env.js">'
+          curl -skf https://msca.aws.tn4consulting.com/ | grep -qi '<script src="env.js">'
