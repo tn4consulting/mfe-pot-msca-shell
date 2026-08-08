@@ -1,0 +1,30 @@
+# Overrides layered on top of values.yaml for a real AWS EKS deployment (see
+# mfe-pot/docs/plans/20260808-1500-mfe-pot-aws-eks-terraform.md). See
+# mfe-pot-job-bank-mfe/charts/job-bank-mfe/values-eks.yaml for the fuller
+# explanatory comments this pattern was worked out against first.
+#
+# Unlike every other app's values-eks.yaml, this one also has to rewrite the
+# federation directory (`remotes`) and `mockIdpBaseUrl` -- both are real
+# public Ingress hostnames the citizen's own browser fetches directly
+# (client-side federation loading + a real top-level /authorize navigation),
+# not in-cluster Service DNS, so they must point at the real
+# aws.tn4consulting.com hostnames too, not just this app's own.
+
+frontend:
+  image:
+    repository: 147318891438.dkr.ecr.ca-central-1.amazonaws.com/mfe-pot-msca-shell
+    pullPolicy: IfNotPresent
+  runtimeConfig:
+    strapiBaseUrl: "https://cms.aws.tn4consulting.com"
+    mockIdpBaseUrl: "https://mock-idp.aws.tn4consulting.com"
+    remotes:
+      job-bank-mfe: "https://job-bank-mfe.aws.tn4consulting.com/remoteEntry.json"
+      employment-insurance-mfe: "https://employment-insurance-mfe.aws.tn4consulting.com/remoteEntry.json"
+      dashboard-mfe: "https://dashboard-mfe.aws.tn4consulting.com/remoteEntry.json"
+      employment-life-events-mfe: "https://employment-life-events-mfe.aws.tn4consulting.com/remoteEntry.json"
+
+ingress:
+  host: msca.aws.tn4consulting.com
+  tls:
+    enabled: true
+    clusterIssuer: letsencrypt-staging

@@ -39,3 +39,9 @@ frontend:
 ingress:
   host: msca.mfe-pot.local
   className: nginx
+  # TLS is off by default (kind/local has no real cert authority) --
+  # values-eks.yaml turns this on for a real AWS deployment. See
+  # templates/ingress.yaml for how these two fields are consumed.
+  tls:
+    enabled: false
+    clusterIssuer: letsencrypt-staging
