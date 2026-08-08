@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
 
       - name: Lint, test, build
         run: pnpm exec nx run-many -t lint,test,build --all
@@ -83,7 +83,7 @@ jobs:
           tags: mfe-pot-msca-shell:kind
           load: true
           secrets: |
-            npm_token=${{ secrets.GITHUB_TOKEN }}
+            npm_token=${{ secrets.NPM_READ_TOKEN }}
 
       # Pinned node image: this environment's Docker daemon (cgroup v1)
       # can't kubeadm-init kind's current default node image (built for
@@ -197,7 +197,7 @@ jobs:
           push: true
           tags: ${{ steps.ecr-login.outputs.registry }}/mfe-pot-msca-shell:${{ github.sha }}
           secrets: |
-            npm_token=${{ secrets.GITHUB_TOKEN }}
+            npm_token=${{ secrets.NPM_READ_TOKEN }}
 
       - name: Update kubeconfig
         if: steps.check.outputs.cluster_up == 'true'
