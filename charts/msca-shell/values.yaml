@@ -30,6 +30,9 @@ frontend:
     # same-origin-CORS fetch for /token, same reason strapiBaseUrl above
     # is a public hostname and not in-cluster Service DNS.
     mockIdpBaseUrl: "http://mock-idp.mfe-pot.local"
+    # Browser-reachable Ingress host, not in-cluster Service DNS -- see
+    # mfe-pot-platform/charts/otel-collector.
+    otelExporterOtlpEndpoint: "http://otel.mfe-pot.local"
     remotes:
       job-bank-mfe: "http://job-bank-mfe.mfe-pot.local/remoteEntry.json"
       employment-insurance-mfe: "http://employment-insurance-mfe.mfe-pot.local/remoteEntry.json"

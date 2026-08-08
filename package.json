@@ -54,6 +54,7 @@
     "@tn4consulting/shared-federation-config": "^0.7.0",
     "@tn4consulting/shared-federation-runtime": "^1.0.2",
     "@tn4consulting/shared-i18n": "^1.1.0",
+    "@tn4consulting/shared-observability": "^0.1.0",
     "@tn4consulting/shared-runtime-config": "^0.1.4",
     "@tn4consulting/shared-ui-scds-core": "^1.1.0",
     "es-module-shims": "^2.8.0",

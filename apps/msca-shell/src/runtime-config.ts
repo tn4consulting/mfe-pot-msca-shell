@@ -10,4 +10,8 @@ import { getRuntimeConfig } from '@tn4consulting/shared-runtime-config';
  */
 export const runtimeConfig = getRuntimeConfig({
   mockIdpBaseUrl: 'http://localhost:3005',
+  // undefined -- no local collector needed for plain `nx serve`, see
+  // shared-observability's initBrowserObservability, called from
+  // bootstrap.tsx.
+  otelExporterOtlpEndpoint: undefined as string | undefined,
 });

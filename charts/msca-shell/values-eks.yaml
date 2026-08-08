@@ -17,6 +17,7 @@ frontend:
   runtimeConfig:
     strapiBaseUrl: "https://cms.aws.tn4consulting.com"
     mockIdpBaseUrl: "https://mock-idp.aws.tn4consulting.com"
+    otelExporterOtlpEndpoint: "https://otel.aws.tn4consulting.com"
     remotes:
       job-bank-mfe: "https://job-bank-mfe.aws.tn4consulting.com/remoteEntry.json"
       employment-insurance-mfe: "https://employment-insurance-mfe.aws.tn4consulting.com/remoteEntry.json"
