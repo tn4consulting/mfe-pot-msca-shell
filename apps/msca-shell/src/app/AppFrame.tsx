@@ -43,6 +43,36 @@ function InertNavLink({ iconName, children }: { iconName?: string; children: Rea
 }
 
 /**
+ * A real link to a sibling demo service (Grafana, CMS, the job-bank-shell
+ * host) -- unlike AppNavLink, it's a genuine cross-origin destination, so it
+ * gets a plain browser navigation rather than a preventDefault()+navigate()
+ * intercept (there's no client-side route on the other end for React Router
+ * to own).
+ */
+function DemoNavLink({ href, iconName, children }: { href: string; iconName?: string; children: ReactNode }) {
+  return (
+    <scds-nav-link href={href} icon-name={iconName}>
+      {children}
+    </scds-nav-link>
+  );
+}
+
+/**
+ * Every other demo/observability surface in the family lives one Ingress
+ * label over from this app's own host on the same base domain -- true on
+ * both kind (`msca.mfe-pot.local` -> `grafana.mfe-pot.local`) and EKS
+ * (`msca.aws.tn4consulting.com` -> `grafana.aws.tn4consulting.com`), per the
+ * naming convention in `mfe-pot-platform/CLAUDE.md`. Deriving it from the
+ * current origin avoids wiring a third runtime-config field per sibling
+ * service just for a sidebar link.
+ */
+function siblingServiceUrl(serviceLabel: string): string {
+  const { protocol, hostname } = window.location;
+  const baseDomain = hostname.replace(/^[^.]+\./, '');
+  return `${protocol}//${serviceLabel}.${baseDomain}`;
+}
+
+/**
  * The app frame (header + collapsible sidebar nav + footer), owned by the
  * shell only. Remotes render their own content inside it via
  * RemoteRouteHost -- they never render their own header/footer/nav (see
@@ -109,18 +139,31 @@ export function AppFrame({ children }: { children: ReactNode }) {
               <AppNavLink href="/dashboard" iconName="home">
                 {t('nav.dashboard')}
               </AppNavLink>
-              <AppNavLink href="/life-events" iconName="compass">
+              <AppNavLink href="/life-events" iconName="activity">
                 {t('nav.lifeEvents')}
               </AppNavLink>
-              <InertNavLink iconName="finance">{t('appFrame.nav.taxesFinancial')}</InertNavLink>
               <scds-nav-group label={t('appFrame.nav.employmentGroupLabel')} icon-name="briefcase">
                 <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
                 <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
               </scds-nav-group>
-              <InertNavLink iconName="heart">{t('appFrame.nav.health')}</InertNavLink>
-              <InertNavLink iconName="activity">{t('appFrame.nav.recreationSport')}</InertNavLink>
-              <InertNavLink iconName="plane">{t('appFrame.nav.travel')}</InertNavLink>
-              <InertNavLink iconName="book">{t('appFrame.nav.education')}</InertNavLink>
+              {/* The remaining entries mirror the real "Sign in to your account to
+                  access services for:" list on Canada.ca/MSCA (see
+                  mfe-pot/TODO.md's "Menu / sidebar nav scope" item) -- none of
+                  these have a backing remote/BFF in this family yet, so they
+                  render inert rather than as dead/misleading links. */}
+              <scds-nav-group label={t('appFrame.nav.pensionsGroupLabel')} icon-name="finance">
+                <InertNavLink>{t('appFrame.nav.cpp')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.cppDisability')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.oas')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.disabilityBenefit')}</InertNavLink>
+              </scds-nav-group>
+              <InertNavLink iconName="heart">{t('appFrame.nav.dentalCarePlan')}</InertNavLink>
+              <InertNavLink iconName="shield">{t('appFrame.nav.sin')}</InertNavLink>
+              <scds-nav-group label={t('appFrame.nav.studentLoansGroupLabel')} icon-name="book">
+                <InertNavLink>{t('appFrame.nav.nslsc')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.apprenticeLoan')}</InertNavLink>
+              </scds-nav-group>
+              <InertNavLink iconName="plane">{t('appFrame.nav.passport')}</InertNavLink>
             </div>
             <scds-nav-divider slot="secondary"></scds-nav-divider>
             <div slot="secondary">
@@ -136,6 +179,17 @@ export function AppFrame({ children }: { children: ReactNode }) {
               <scds-nav-link icon-name="log-out" onClick={signOut}>
                 {t('appFrame.nav.logOut')}
               </scds-nav-link>
+            </div>
+            {/* Links out to the other demo/observability surfaces in the
+                family -- not a citizen-facing service, so it stays last and
+                visually separated from the real nav above. */}
+            <scds-nav-divider slot="secondary"></scds-nav-divider>
+            <div slot="secondary">
+              <scds-nav-group label={t('appFrame.nav.demoGroupLabel')} icon-name="info-circle">
+                <DemoNavLink href={siblingServiceUrl('grafana')}>{t('appFrame.nav.demoGrafana')}</DemoNavLink>
+                <DemoNavLink href={siblingServiceUrl('cms')}>{t('appFrame.nav.demoCms')}</DemoNavLink>
+                <DemoNavLink href={siblingServiceUrl('job-bank')}>{t('appFrame.nav.demoJobBank')}</DemoNavLink>
+              </scds-nav-group>
             </div>
           </scds-sidebar>
         )}

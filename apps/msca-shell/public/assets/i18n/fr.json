@@ -25,11 +25,17 @@
     "sidebarLabel": "Menu du site",
     "nav": {
       "employmentGroupLabel": "Emploi",
-      "taxesFinancial": "Impôts et finances",
-      "health": "Santé",
-      "recreationSport": "Loisirs et sport",
-      "travel": "Voyage",
-      "education": "Éducation",
+      "pensionsGroupLabel": "Pensions et prestations d'invalidité",
+      "cpp": "Régime de pensions du Canada (à venir)",
+      "cppDisability": "Prestations d'invalidité du RPC (à venir)",
+      "oas": "Sécurité de la vieillesse (à venir)",
+      "disabilityBenefit": "Prestation canadienne pour les personnes handicapées (à venir)",
+      "dentalCarePlan": "Régime canadien de soins dentaires (à venir)",
+      "sin": "Numéro d'assurance sociale (à venir)",
+      "studentLoansGroupLabel": "Prêts étudiants",
+      "nslsc": "Centre de service national de prêts aux étudiants (à venir)",
+      "apprenticeLoan": "Prêt canadien aux apprentis (à venir)",
+      "passport": "Passeport (à venir)",
       "messages": "Messages",
       "documents": "Documents",
       "accountGroupLabel": "Compte - {{name}}",
@@ -38,7 +44,11 @@
       "authorizations": "Autorisations",
       "security": "Sécurité",
       "actOnBehalf": "Agir au nom de - {{name}}",
-      "logOut": "Fermer la session"
+      "logOut": "Fermer la session",
+      "demoGroupLabel": "Démo",
+      "demoGrafana": "Observabilité (Grafana)",
+      "demoCms": "Gestion de contenu (Strapi)",
+      "demoJobBank": "Hôte de démonstration Guichet-Emplois"
     }
   },
   "footer": {

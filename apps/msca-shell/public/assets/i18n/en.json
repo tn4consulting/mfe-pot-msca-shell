@@ -25,11 +25,17 @@
     "sidebarLabel": "Site menu",
     "nav": {
       "employmentGroupLabel": "Employment",
-      "taxesFinancial": "Taxes / Financial",
-      "health": "Health",
-      "recreationSport": "Recreation / Sport",
-      "travel": "Travel",
-      "education": "Education",
+      "pensionsGroupLabel": "Pensions and disability benefits",
+      "cpp": "Canada Pension Plan (coming soon)",
+      "cppDisability": "CPP disability benefits (coming soon)",
+      "oas": "Old Age Security (coming soon)",
+      "disabilityBenefit": "Canada Disability Benefit (coming soon)",
+      "dentalCarePlan": "Canadian Dental Care Plan (coming soon)",
+      "sin": "Social Insurance Number (coming soon)",
+      "studentLoansGroupLabel": "Student loans",
+      "nslsc": "National Student Loans Service Centre (coming soon)",
+      "apprenticeLoan": "Canada Apprentice Loan (coming soon)",
+      "passport": "Passport (coming soon)",
       "messages": "Messages",
       "documents": "Documents",
       "accountGroupLabel": "Account - {{name}}",
@@ -38,7 +44,11 @@
       "authorizations": "Authorizations",
       "security": "Security",
       "actOnBehalf": "Act on behalf - {{name}}",
-      "logOut": "Log Out"
+      "logOut": "Log Out",
+      "demoGroupLabel": "Demo",
+      "demoGrafana": "Observability (Grafana)",
+      "demoCms": "Content management (Strapi)",
+      "demoJobBank": "Job Bank demo host"
     }
   },
   "footer": {
