@@ -21,12 +21,15 @@ importers:
       '@tn4consulting/shared-auth':
         specifier: ^0.3.0
         version: 0.3.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/router@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2))
+      '@tn4consulting/shared-content-client':
+        specifier: ^0.3.0
+        version: 0.3.0
       '@tn4consulting/shared-federation-config':
         specifier: ^0.7.0
         version: 0.7.0(@softarc/native-federation@4.3.2(typescript@6.0.3))
       '@tn4consulting/shared-federation-runtime':
-        specifier: ^1.0.2
-        version: 1.0.2(react@19.2.8)
+        specifier: ^2.0.0
+        version: 2.0.0(react@19.2.8)
       '@tn4consulting/shared-i18n':
         specifier: ^1.1.0
         version: 1.1.0(react@19.2.8)
@@ -2174,13 +2177,16 @@ packages:
       '@angular/core': '>=22.0.0'
       '@angular/router': '>=22.0.0'
 
+  '@tn4consulting/shared-content-client@0.3.0':
+    resolution: {integrity: sha512-FqetYnnYnC/VSBocxHS2p9q7xLBv8O/P6TqK/3mT39HRwqGzaK2GRVgmAPDIOXYjK1EcHixIzD/FEupQh6ZuiA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-content-client/0.3.0/ce7fab8fb3b3c0337012c93ad09b8dea800ebe42}
+
   '@tn4consulting/shared-federation-config@0.7.0':
     resolution: {integrity: sha512-B9dpO/7aTI1DAG6n6JIT0enRnN2Ed5JW8Uenf0yJ33KsqBk110y00wQ0IwPdHmK4AtNCjXTxkjc5k0DC52odJQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-config/0.7.0/cc5f427dd6e229755d41b36e81783559e1b988a8}
     peerDependencies:
       '@softarc/native-federation': '>=4.0.0'
 
-  '@tn4consulting/shared-federation-runtime@1.0.2':
-    resolution: {integrity: sha512-CvupDBqGDkVD4NirwXa9vBwnMe/6J6UOJ4gV9r+8xamDVVANDmONh2KgCxA0yibTC0FKnUz445VoSbySmiDsiQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-runtime/1.0.2/d1b7050eb14e1608f2e4d88ed646b5971777a5b3}
+  '@tn4consulting/shared-federation-runtime@2.0.0':
+    resolution: {integrity: sha512-2Y5EjRo7TchK+MinTcoKeeDcERgjZgI+kT9k3DIc0LhpaeTukl1/OYRJkKv1xxyev4qZbJ95xePQKzt+FabSjg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-federation-runtime/2.0.0/2b7cea9779a2484e5661e3b66ee55d734109d3ae}
     peerDependencies:
       react: '>=19.0.0'
 
@@ -8321,11 +8327,13 @@ snapshots:
       '@angular/core': 22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)
       '@angular/router': 22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(@angular/platform-browser@22.1.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2)))(rxjs@7.8.2)
 
+  '@tn4consulting/shared-content-client@0.3.0': {}
+
   '@tn4consulting/shared-federation-config@0.7.0(@softarc/native-federation@4.3.2(typescript@6.0.3))':
     dependencies:
       '@softarc/native-federation': 4.3.2(typescript@6.0.3)
 
-  '@tn4consulting/shared-federation-runtime@1.0.2(react@19.2.8)':
+  '@tn4consulting/shared-federation-runtime@2.0.0(react@19.2.8)':
     dependencies:
       react: 19.2.8
 
