@@ -23,6 +23,7 @@
     "appTitle": "Mon dossier Service Canada",
     "menuAriaLabel": "Menu",
     "sidebarLabel": "Menu du site",
+    "remoteLoadingLabel": "Chargement en cours...",
     "nav": {
       "employmentGroupLabel": "Emploi",
       "pensionsGroupLabel": "Pensions et prestations d'invalidité",

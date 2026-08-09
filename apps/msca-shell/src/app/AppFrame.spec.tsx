@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { clearSession, createMockSession, getStoredSession, storeSession } from '@tn4consulting/shared-auth/core';
@@ -52,6 +52,37 @@ describe('AppFrame', () => {
     await userEvent.click(screen.getByRole('button', { name: /accountMenu.signOut/ }));
 
     expect(getStoredSession()).toBeNull();
+  });
+
+  it('a real scdsClose event dispatched on the sidebar closes it', async () => {
+    storeSession(createMockSession());
+    const { container } = renderFrame();
+
+    await userEvent.click(screen.getByRole('button', { name: /appFrame.menuAriaLabel/ }));
+    const sidebar = container.querySelector('scds-sidebar');
+    expect(sidebar).not.toBeNull();
+    expect(sidebar?.getAttribute('open')).not.toBeNull();
+
+    sidebar?.dispatchEvent(new CustomEvent('scdsClose'));
+
+    // dispatchEvent bypasses React's own event system, so the resulting
+    // setState doesn't flush synchronously the way a userEvent-driven
+    // interaction does -- wait for the re-render rather than asserting
+    // immediately.
+    await waitFor(() => expect(sidebar?.getAttribute('open')).toBeNull());
+  });
+
+  it('selecting a nav link closes the mobile sidebar', async () => {
+    storeSession(createMockSession());
+    const { container } = renderFrame();
+
+    await userEvent.click(screen.getByRole('button', { name: /appFrame.menuAriaLabel/ }));
+    const sidebar = container.querySelector('scds-sidebar');
+    expect(sidebar?.getAttribute('open')).not.toBeNull();
+
+    await userEvent.click(screen.getByText('nav.dashboard'));
+
+    expect(sidebar?.getAttribute('open')).toBeNull();
   });
 
   it('switchLocale broadcasts the other locale', async () => {

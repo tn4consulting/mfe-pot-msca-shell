@@ -23,6 +23,7 @@
     "appTitle": "My Service Canada Account",
     "menuAriaLabel": "Menu",
     "sidebarLabel": "Site menu",
+    "remoteLoadingLabel": "Loading...",
     "nav": {
       "employmentGroupLabel": "Employment",
       "pensionsGroupLabel": "Pensions and disability benefits",

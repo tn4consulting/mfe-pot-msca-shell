@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { RemoteRouteHost, WidgetRegistry, WidgetRegistryContext } from '@tn4consulting/shared-federation-runtime';
+import { useLocale, useTranslations } from '@tn4consulting/shared-i18n';
+import { assetBaseUrl } from './asset-base-url';
 import { LoginPage } from './LoginPage';
 import { AuthCallbackPage } from './AuthCallbackPage';
 import { LifeEventsHubPage } from './LifeEventsHubPage';
@@ -50,12 +52,16 @@ const WIDGET_REGISTRY: WidgetRegistry = {
  * prop instead of a Context, since a route param isn't identity-sensitive
  * the way a widget-loader Context is.
  */
-function LifeEventsRoute() {
+function LifeEventsRoute({ loadingLabel }: { loadingLabel: string }) {
   const { lifeEventId } = useParams<{ lifeEventId: string }>();
-  return <RemoteRouteHost remoteName="life-events-mfe" props={{ lifeEventId }} />;
+  return <RemoteRouteHost remoteName="life-events-mfe" props={{ lifeEventId }} loadingLabel={loadingLabel} />;
 }
 
 export function AppRoutes() {
+  const locale = useLocale();
+  const { t } = useTranslations(assetBaseUrl, locale);
+  const loadingLabel = t('appFrame.remoteLoadingLabel');
+
   return (
     <WidgetRegistryContext.Provider value={WIDGET_REGISTRY}>
       <Routes>
@@ -65,7 +71,7 @@ export function AppRoutes() {
           path="/dashboard"
           element={
             <RequireSession>
-              <RemoteRouteHost remoteName="dashboard-mfe" />
+              <RemoteRouteHost remoteName="dashboard-mfe" loadingLabel={loadingLabel} />
             </RequireSession>
           }
         />
@@ -81,7 +87,7 @@ export function AppRoutes() {
           path="/life-events/:lifeEventId"
           element={
             <RequireSession>
-              <LifeEventsRoute />
+              <LifeEventsRoute loadingLabel={loadingLabel} />
             </RequireSession>
           }
         />
@@ -89,7 +95,7 @@ export function AppRoutes() {
           path="/job-bank"
           element={
             <RequireSession>
-              <RemoteRouteHost remoteName="job-bank-mfe" />
+              <RemoteRouteHost remoteName="job-bank-mfe" loadingLabel={loadingLabel} />
             </RequireSession>
           }
         />
@@ -97,7 +103,7 @@ export function AppRoutes() {
           path="/employment-insurance"
           element={
             <RequireSession>
-              <RemoteRouteHost remoteName="employment-insurance-mfe" />
+              <RemoteRouteHost remoteName="employment-insurance-mfe" loadingLabel={loadingLabel} />
             </RequireSession>
           }
         />

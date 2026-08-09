@@ -1,7 +1,7 @@
 // See App.tsx's own comment on this same import -- required for the
 // classic JSX transform this app's tsconfig uses.
 import * as React from 'react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthSession, clearSession, getStoredSession, onSessionChange } from '@tn4consulting/shared-auth/core';
 import { Locale, broadcastLocaleChange, useLocale, useTranslations } from '@tn4consulting/shared-i18n';
@@ -17,7 +17,17 @@ import './register-scds';
  * still does), intercepting the click and using the router's own
  * navigate() instead of a full page load.
  */
-function AppNavLink({ href, iconName, children }: { href: string; iconName?: string; children: ReactNode }) {
+function AppNavLink({
+  href,
+  iconName,
+  children,
+  onSelect,
+}: {
+  href: string;
+  iconName?: string;
+  children: ReactNode;
+  onSelect?: () => void;
+}) {
   const navigate = useNavigate();
   return (
     <scds-nav-link
@@ -26,6 +36,7 @@ function AppNavLink({ href, iconName, children }: { href: string; iconName?: str
       onClick={(event) => {
         event.preventDefault();
         navigate(href);
+        onSelect?.();
       }}
     >
       {children}
@@ -88,8 +99,30 @@ export function AppFrame({ children }: { children: ReactNode }) {
   const { t } = useTranslations(assetBaseUrl, locale);
   const [session, setSession] = useState<AuthSession | null>(() => getStoredSession());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
 
   useEffect(() => onSessionChange(setSession), []);
+
+  /**
+   * scds-sidebar emits a real bubbling `scdsClose` CustomEvent (overlay
+   * click, internal close button) -- but React 19 doesn't wire an
+   * `onScdsClose`-shaped JSX prop to a real addEventListener call on a
+   * custom element the way it does for a recognized native event like
+   * `click`; it silently sets an inert same-named property instead. Same
+   * delegated-listener fix employment-insurance-mfe's EiApplicationForm.tsx
+   * already established for this exact gotcha.
+   */
+  useEffect(() => {
+    const sidebar = sidebarRef.current;
+    if (!sidebar) {
+      return;
+    }
+    function handleClose(): void {
+      setSidebarOpen(false);
+    }
+    sidebar.addEventListener('scdsClose', handleClose);
+    return () => sidebar.removeEventListener('scdsClose', handleClose);
+  }, [session]);
 
   const otherLocale: Locale = locale === 'en' ? 'fr' : 'en';
 
@@ -98,6 +131,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   }
 
   function signOut(): void {
+    setSidebarOpen(false);
     clearSession();
     navigate('/');
   }
@@ -134,17 +168,21 @@ export function AppFrame({ children }: { children: ReactNode }) {
 
       <div className="scds-layout">
         {session && (
-          <scds-sidebar open={sidebarOpen} label={t('appFrame.sidebarLabel')} onScdsClose={() => setSidebarOpen(false)}>
+          <scds-sidebar ref={sidebarRef} open={sidebarOpen} label={t('appFrame.sidebarLabel')}>
             <div slot="primary">
-              <AppNavLink href="/dashboard" iconName="home">
+              <AppNavLink href="/dashboard" iconName="home" onSelect={() => setSidebarOpen(false)}>
                 {t('nav.dashboard')}
               </AppNavLink>
-              <AppNavLink href="/life-events" iconName="activity">
+              <AppNavLink href="/life-events" iconName="activity" onSelect={() => setSidebarOpen(false)}>
                 {t('nav.lifeEvents')}
               </AppNavLink>
               <scds-nav-group label={t('appFrame.nav.employmentGroupLabel')} icon-name="briefcase">
-                <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
-                <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
+                <AppNavLink href="/job-bank" onSelect={() => setSidebarOpen(false)}>
+                  {t('nav.jobBank')}
+                </AppNavLink>
+                <AppNavLink href="/employment-insurance" onSelect={() => setSidebarOpen(false)}>
+                  {t('nav.employmentInsurance')}
+                </AppNavLink>
               </scds-nav-group>
               {/* The remaining entries mirror the real "Sign in to your account to
                   access services for:" list on Canada.ca/MSCA (see
