@@ -38,7 +38,7 @@ const devDefaults: ShellRuntimeConfig = {
   strapiBaseUrl: 'http://localhost:1337',
   remotes: {
     'dashboard-mfe': 'http://localhost:4201/remoteEntry.json',
-    'employment-life-events-mfe': 'http://localhost:4202/remoteEntry.json',
+    'life-events-mfe': 'http://localhost:4202/remoteEntry.json',
     'job-bank-mfe': 'http://localhost:4203/remoteEntry.json',
     'employment-insurance-mfe': 'http://localhost:4204/remoteEntry.json',
   },

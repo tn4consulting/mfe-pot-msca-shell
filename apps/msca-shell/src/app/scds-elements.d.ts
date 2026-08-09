@@ -21,6 +21,26 @@ declare global {
       'scds-nav-divider': ScdsElementProps;
       'scds-footer': ScdsElementProps;
       'scds-icon': ScdsElementProps & { name?: string; size?: string; label?: string };
+      /**
+       * Added for the life-events hub page (LifeEventsHubPage.tsx) -- the
+       * shell's first time rendering a card itself, previously only ever
+       * rendered inside a remote (see mfe-pot-platform's CLAUDE.md, SCDS
+       * section, for why every prop below is a plain string and safe to
+       * set as a JSX attribute).
+       */
+      'scds-card': ScdsElementProps & {
+        'card-title'?: string;
+        'card-title-tag'?: 'h3' | 'h4' | 'h5' | 'h6';
+        description?: string;
+        href?: string;
+        rel?: string;
+        target?: string;
+        'img-src'?: string;
+        'img-alt'?: string;
+        tone?: 'info' | 'success' | 'warning' | 'danger' | 'neutral';
+        'tone-label'?: string;
+      };
+      'scds-heading': ScdsElementProps & { tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' };
     }
   }
 }

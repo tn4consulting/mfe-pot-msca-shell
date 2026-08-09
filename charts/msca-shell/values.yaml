@@ -19,9 +19,8 @@ frontend:
   # happens in the end user's browser, fetching remoteEntry.json directly
   # from that app's origin -- unlike dashboard-bff's
   # server-to-server calls in the dashboard chart, this is never
-  # cluster-internal traffic). job-bank, employment-insurance, and
-  # dashboard are real, already-deployed sibling repos; employment-life-events
-  # isn't extracted yet, so its entry is a plausible value for when it is.
+  # cluster-internal traffic). job-bank, employment-insurance, dashboard,
+  # and life-events are all real, already-deployed sibling repos.
   runtimeConfig:
     strapiBaseUrl: "http://cms.mfe-pot.local"
     # mock-idp's own public Ingress hostname (mfe-pot-platform's
@@ -37,7 +36,7 @@ frontend:
       job-bank-mfe: "http://job-bank-mfe.mfe-pot.local/remoteEntry.json"
       employment-insurance-mfe: "http://employment-insurance-mfe.mfe-pot.local/remoteEntry.json"
       dashboard-mfe: "http://dashboard-mfe.mfe-pot.local/remoteEntry.json"
-      employment-life-events-mfe: "http://employment-life-events-mfe.mfe-pot.local/remoteEntry.json"
+      life-events-mfe: "http://life-events-mfe.mfe-pot.local/remoteEntry.json"
 
 ingress:
   host: msca.mfe-pot.local

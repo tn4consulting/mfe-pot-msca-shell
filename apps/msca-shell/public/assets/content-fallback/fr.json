@@ -1,0 +1,14 @@
+{
+  "life-events.job-loss.hub-tile": {
+    "title": "Vous avez perdu votre emploi",
+    "body": "Conseils sur votre relevé d'emploi, la recherche d'emploi et l'assurance-emploi."
+  },
+  "life-events.birth.hub-tile": {
+    "title": "Vous avez eu un enfant",
+    "body": "Déclarez la naissance, présentez une demande de prestations de maternité/parentales et trouvez des soutiens familiaux."
+  },
+  "life-events.disability.hub-tile": {
+    "title": "Vous vivez avec un handicap",
+    "body": "Présentez une demande de prestations d'invalidité et trouvez des services et soutiens en accessibilité."
+  }
+}

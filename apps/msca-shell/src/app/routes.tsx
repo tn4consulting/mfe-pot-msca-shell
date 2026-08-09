@@ -1,142 +1,107 @@
 // See App.tsx's own comment on this same import -- required for the
 // classic JSX transform this app's tsconfig uses.
 import * as React from 'react';
-import type { ComponentType } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import {
-  EiReportingStatusWidgetLoaderContext,
-  JobApplicationsWidgetLoaderContext,
-  PaymentHistoryWidgetLoaderContext,
-  RemoteRouteHost,
-  useRemoteModuleLoader,
-} from '@tn4consulting/shared-federation-runtime';
+import { Route, Routes, useParams } from 'react-router-dom';
+import { RemoteRouteHost, WidgetRegistry, WidgetRegistryContext } from '@tn4consulting/shared-federation-runtime';
 import { LoginPage } from './LoginPage';
 import { AuthCallbackPage } from './AuthCallbackPage';
+import { LifeEventsHubPage } from './LifeEventsHubPage';
 import { RequireSession } from './RequireSession';
 
 /**
- * Both widget loaders below are wired here but currently unconsumed --
- * dashboard-mfe (React, like every app in the family now; the whole
- * Angular-to-React migration is done) used to embed job-bank's
- * applications widget and employment-insurance's reporting-status widget
- * inline in its own overview, but dropped both embeds once
- * docs/msca-screenshots/dashboard.png showed neither tile actually
- * belongs on the dashboard page -- each now renders directly on its own
- * owning app's page instead (job-bank-mfe's/employment-insurance-mfe's own
- * App.tsx; see mfe-pot-dashboard-mfe's own CLAUDE.md). `RemoteRouteHost`
- * mounts dashboard-mfe's real exported `App` directly, no degraded
- * fallback. The Provider wiring stays in place regardless -- unconsumed
- * but still real and buildable, in case a future consumer wants it, same
- * "kept even though nothing reads it today" reasoning as the federation
- * exposes themselves (see job-bank-mfe's/employment-insurance-mfe's own
- * federation.config.mjs).
+ * Every cross-remote widget this shell can hand to a consuming remote, in
+ * one flat map keyed by widget id -- replaces the old one-Context-per-
+ * widget-type wiring (a separate `<XyzWidgetLoaderContext.Provider>` per
+ * route, per widget) with a single `<WidgetRegistryContext.Provider>`
+ * wrapping the whole route tree once, below. Providing a descriptor no
+ * route ends up consuming is harmless, so adding a widget for a new life
+ * event (or any future consumer) never needs new Provider nesting -- just
+ * one new entry here. See `@tn4consulting/shared-federation-runtime`'s
+ * `useWidgetLoader`/`WidgetRegistryContext` for the consumer side.
  */
-function DashboardRoute() {
-  const loadRemoteModule = useRemoteModuleLoader();
-
-  return (
-    <JobApplicationsWidgetLoaderContext.Provider
-      value={async () => {
-        const widgetModule = await loadRemoteModule('job-bank-mfe', './JobApplicationsWidget');
-        return { component: widgetModule['JobApplicationsList'] as ComponentType<Record<string, unknown>> };
-      }}
-    >
-      <EiReportingStatusWidgetLoaderContext.Provider
-        value={async () => {
-          // employment-insurance converted to React in Phase 3 -- this
-          // now resolves to a real ComponentType, no cast-through-unknown
-          // needed for that reason anymore (the `as` stays only because
-          // loadRemoteModule's own return type is a plain
-          // Record<string, unknown>, same as every other federated
-          // module access in this file).
-          const widgetModule = await loadRemoteModule('employment-insurance-mfe', './EiReportingStatusWidget');
-          return { component: widgetModule['ReportingStatus'] as ComponentType<Record<string, unknown>> };
-        }}
-      >
-        <RemoteRouteHost remoteName="dashboard-mfe" />
-      </EiReportingStatusWidgetLoaderContext.Provider>
-    </JobApplicationsWidgetLoaderContext.Provider>
-  );
-}
+const WIDGET_REGISTRY: WidgetRegistry = {
+  'payment-history': {
+    remoteName: 'dashboard-mfe',
+    exposedModule: './PaymentHistoryWidget',
+    exportName: 'DashboardFeaturePaymentHistory',
+  },
+  'job-applications': {
+    remoteName: 'job-bank-mfe',
+    exposedModule: './JobApplicationsWidget',
+    exportName: 'JobApplicationsList',
+  },
+  'ei-reporting-status': {
+    remoteName: 'employment-insurance-mfe',
+    exposedModule: './EiReportingStatusWidget',
+    exportName: 'ReportingStatus',
+  },
+};
 
 /**
- * employment-life-events is the CONSUMER of three widgets: dashboard's
- * payment-history widget (original), plus job-bank's job-applications
- * widget and employment-insurance's reporting-status widget (added for
- * its guided-journey checklist, which mounts these two to derive real
- * "have you actually applied / are you actually up to date on reporting"
- * completion state -- see employment-life-events-mfe's own GuidedJourney.tsx
- * and its JobSearchChecklistItem/EiChecklistItems). Same host-mediated
- * pattern as `DashboardRoute` above, just wired to a different consuming
- * route -- there's no conflict in the same Context also being provided
- * there; each route tree gets its own Provider instance.
+ * A life event's remote (`life-events-mfe`) is parametric -- one remote,
+ * many life events, selected by `:lifeEventId`. The remote must not read
+ * this param via its own bundled `useParams()`: `react-router-dom` isn't a
+ * federation-shared singleton, so the remote's own copy has a different
+ * Context identity than the shell's, and `useParams()` inside the remote
+ * would silently resolve to nothing. The shell reads its own route param
+ * here and forwards it as a plain prop via `RemoteRouteHost`'s `props`
+ * (added to `shared-federation-runtime@2.0.0` specifically for this) --
+ * consistent with "every remote is fully self-configuring," just via a
+ * prop instead of a Context, since a route param isn't identity-sensitive
+ * the way a widget-loader Context is.
  */
-function EmploymentLifeEventsRoute() {
-  const loadRemoteModule = useRemoteModuleLoader();
-
-  return (
-    <PaymentHistoryWidgetLoaderContext.Provider
-      value={async () => {
-        const widgetModule = await loadRemoteModule('dashboard-mfe', './PaymentHistoryWidget');
-        return { component: widgetModule['DashboardFeaturePaymentHistory'] as ComponentType<Record<string, unknown>> };
-      }}
-    >
-      <JobApplicationsWidgetLoaderContext.Provider
-        value={async () => {
-          const widgetModule = await loadRemoteModule('job-bank-mfe', './JobApplicationsWidget');
-          return { component: widgetModule['JobApplicationsList'] as ComponentType<Record<string, unknown>> };
-        }}
-      >
-        <EiReportingStatusWidgetLoaderContext.Provider
-          value={async () => {
-            const widgetModule = await loadRemoteModule('employment-insurance-mfe', './EiReportingStatusWidget');
-            return { component: widgetModule['ReportingStatus'] as ComponentType<Record<string, unknown>> };
-          }}
-        >
-          <RemoteRouteHost remoteName="employment-life-events-mfe" />
-        </EiReportingStatusWidgetLoaderContext.Provider>
-      </JobApplicationsWidgetLoaderContext.Provider>
-    </PaymentHistoryWidgetLoaderContext.Provider>
-  );
+function LifeEventsRoute() {
+  const { lifeEventId } = useParams<{ lifeEventId: string }>();
+  return <RemoteRouteHost remoteName="life-events-mfe" props={{ lifeEventId }} />;
 }
 
 export function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/auth/callback" element={<AuthCallbackPage />} />
-      <Route
-        path="/dashboard"
-        element={
-          <RequireSession>
-            <DashboardRoute />
-          </RequireSession>
-        }
-      />
-      <Route
-        path="/job-loss"
-        element={
-          <RequireSession>
-            <EmploymentLifeEventsRoute />
-          </RequireSession>
-        }
-      />
-      <Route
-        path="/job-bank"
-        element={
-          <RequireSession>
-            <RemoteRouteHost remoteName="job-bank-mfe" />
-          </RequireSession>
-        }
-      />
-      <Route
-        path="/employment-insurance"
-        element={
-          <RequireSession>
-            <RemoteRouteHost remoteName="employment-insurance-mfe" />
-          </RequireSession>
-        }
-      />
-    </Routes>
+    <WidgetRegistryContext.Provider value={WIDGET_REGISTRY}>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireSession>
+              <RemoteRouteHost remoteName="dashboard-mfe" />
+            </RequireSession>
+          }
+        />
+        <Route
+          path="/life-events"
+          element={
+            <RequireSession>
+              <LifeEventsHubPage />
+            </RequireSession>
+          }
+        />
+        <Route
+          path="/life-events/:lifeEventId"
+          element={
+            <RequireSession>
+              <LifeEventsRoute />
+            </RequireSession>
+          }
+        />
+        <Route
+          path="/job-bank"
+          element={
+            <RequireSession>
+              <RemoteRouteHost remoteName="job-bank-mfe" />
+            </RequireSession>
+          }
+        />
+        <Route
+          path="/employment-insurance"
+          element={
+            <RequireSession>
+              <RemoteRouteHost remoteName="employment-insurance-mfe" />
+            </RequireSession>
+          }
+        />
+      </Routes>
+    </WidgetRegistryContext.Provider>
   );
 }

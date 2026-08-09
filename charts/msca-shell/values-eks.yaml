@@ -22,7 +22,7 @@ frontend:
       job-bank-mfe: "https://job-bank-mfe.aws.tn4consulting.com/remoteEntry.json"
       employment-insurance-mfe: "https://employment-insurance-mfe.aws.tn4consulting.com/remoteEntry.json"
       dashboard-mfe: "https://dashboard-mfe.aws.tn4consulting.com/remoteEntry.json"
-      employment-life-events-mfe: "https://employment-life-events-mfe.aws.tn4consulting.com/remoteEntry.json"
+      life-events-mfe: "https://life-events-mfe.aws.tn4consulting.com/remoteEntry.json"
 
 ingress:
   host: msca.aws.tn4consulting.com

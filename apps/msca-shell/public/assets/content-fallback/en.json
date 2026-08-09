@@ -1,0 +1,14 @@
+{
+  "life-events.job-loss.hub-tile": {
+    "title": "You lost your job",
+    "body": "Guidance on your Record of Employment, job search, and Employment Insurance."
+  },
+  "life-events.birth.hub-tile": {
+    "title": "You had a baby",
+    "body": "Register the birth, apply for maternity/parental benefits, and find family supports."
+  },
+  "life-events.disability.hub-tile": {
+    "title": "You have a disability",
+    "body": "Apply for disability benefits and find accessibility supports and services."
+  }
+}

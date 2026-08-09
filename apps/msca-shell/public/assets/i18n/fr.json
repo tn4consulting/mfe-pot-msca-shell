@@ -1,9 +1,20 @@
 {
   "nav": {
     "dashboard": "Tableau de bord (module distant)",
-    "employmentLifeEvents": "Événements de vie liés à l'emploi (module distant)",
+    "lifeEvents": "Événements de vie (module distant)",
     "jobBank": "Guichet-Emplois (module distant)",
     "employmentInsurance": "Assurance-emploi (module distant)"
+  },
+  "lifeEventsHub": {
+    "heading": "Comment pouvons-nous vous aider?",
+    "lifeEventsHeading": "Événements de vie",
+    "benefitsHeading": "Gérer vos prestations",
+    "dashboard": { "title": "Tableau de bord", "description": "Votre aperçu global des prestations, paiements et correspondance." },
+    "jobBank": { "title": "Guichet-Emplois", "description": "Cherchez un emploi et postulez." },
+    "employmentInsurance": {
+      "title": "Assurance-emploi",
+      "description": "Présentez une demande d'assurance-emploi, vérifiez l'état de votre demande et soumettez vos relevés."
+    }
   },
   "accountMenu": {
     "signOut": "Se déconnecter ({{name}})"

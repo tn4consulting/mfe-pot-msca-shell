@@ -14,4 +14,9 @@ export const runtimeConfig = getRuntimeConfig({
   // shared-observability's initBrowserObservability, called from
   // bootstrap.tsx.
   otelExporterOtlpEndpoint: undefined as string | undefined,
+  // For LifeEventsHubPage's CMS-driven hub-tile content -- same value as
+  // main.tsx's own ShellRuntimeConfig.strapiBaseUrl dev default, kept in
+  // sync by hand since main.tsx can't import this module (see its own
+  // bare-specifier comment) and this module can't read main.tsx's value.
+  strapiBaseUrl: 'http://localhost:1337' as string | undefined,
 });
