@@ -98,8 +98,8 @@ importers:
         specifier: ^14.6.1
         version: 14.6.3(@testing-library/dom@10.4.1)
       '@tn4consulting/shared-platform-standards':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       '@types/jest':
         specifier: ~30.0.0
         version: 30.0.0
@@ -2198,8 +2198,8 @@ packages:
   '@tn4consulting/shared-observability@0.1.1':
     resolution: {integrity: sha512-V4RUq8KMEoktRgz0olN9c++/2vB61cDghR9fiJPTquuFBuTEx9OaBgS5xjYxbKuFAJlfAqS6OuD40m3pEBF9eg==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-observability/0.1.1/263d6dd86869dcffe9f8c242b6a062779eec1106}
 
-  '@tn4consulting/shared-platform-standards@0.1.0':
-    resolution: {integrity: sha512-e9Mb3svmsApdNB/ZgX/ynWBzU5T7omiFDfvVB1b8mthZZ+M4q9zmWgEwMlcGB7YUgseiQpVFQxuVAH9WDp19yA==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-platform-standards/0.1.0/6054b9b23939e0ab1014ba441ef9c5544555c101}
+  '@tn4consulting/shared-platform-standards@0.2.0':
+    resolution: {integrity: sha512-kRz2MNTx8p/ZSVeTuwGG6J1k6cPy7+Ktgoy74z/nh7oKMQ6eZcCk2iftlBXi5I+jPmsxSBJm3obqgCwTbq654w==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-platform-standards/0.2.0/b64e4a6183a05887d541d4dde837ceb86e9a1f9b}
     hasBin: true
 
   '@tn4consulting/shared-runtime-config@0.1.4':
@@ -8356,7 +8356,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tn4consulting/shared-platform-standards@0.1.0': {}
+  '@tn4consulting/shared-platform-standards@0.2.0': {}
 
   '@tn4consulting/shared-runtime-config@0.1.4': {}
 
