@@ -41,6 +41,15 @@ declare global {
         'tone-label'?: string;
       };
       'scds-heading': ScdsElementProps & { tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' };
+      /** Added for LoginPage.tsx's intro copy -- see mfe-pot-dashboard-mfe's own scds-elements.d.ts for the same typing. */
+      'scds-text': ScdsElementProps & { tag?: 'p' | 'span'; size?: 'small' | 'base' };
+      /** Added for LoginPage.tsx's sign-in CTA -- the shell's first use of scds-button anywhere in the family. */
+      'scds-button': ScdsElementProps & {
+        variant?: 'primary' | 'secondary';
+        size?: 'small' | 'regular';
+        type?: 'button' | 'submit' | 'reset';
+        disabled?: boolean;
+      };
     }
   }
 }

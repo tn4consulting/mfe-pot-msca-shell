@@ -10,6 +10,9 @@ describe('App', () => {
     const loadRemoteModule = jest.fn();
     render(<App loadRemoteModule={loadRemoteModule} />);
 
-    expect(screen.getByRole('button', { name: 'login.signInButton' })).toBeInTheDocument();
+    // scds-button isn't hydrated in this test (register-scds is mocked
+    // out above), so it has no accessible button role -- assert on its
+    // (real, light-DOM) text content instead.
+    expect(screen.getByText('login.signInButton')).toBeInTheDocument();
   });
 });

@@ -40,9 +40,13 @@ describe('LoginPage', () => {
 
   it("signIn redirects to mock-idp's /authorize with a PKCE code challenge", async () => {
     const redirectSpy = jest.spyOn(browserRedirect, 'redirectTo').mockImplementation(() => undefined);
-    renderLoginPage();
+    const { container } = renderLoginPage();
 
-    await userEvent.click(screen.getByRole('button', { name: 'login.signInButton' }));
+    // scds-button isn't hydrated in this test (register-scds is only ever
+    // imported by AppFrame.tsx, not rendered here) -- same convention as
+    // LifeEventsHubPage.spec.tsx: query the custom element itself rather
+    // than its (never-rendered) shadow-DOM button role.
+    await userEvent.click(container.querySelector('scds-button') as HTMLElement);
     await waitFor(() => expect(redirectSpy).toHaveBeenCalledTimes(1));
 
     const url = new URL(redirectSpy.mock.calls[0][0]);
@@ -58,9 +62,9 @@ describe('LoginPage', () => {
 
   it('signIn stores flight state for the callback page to consume', async () => {
     jest.spyOn(browserRedirect, 'redirectTo').mockImplementation(() => undefined);
-    renderLoginPage();
+    const { container } = renderLoginPage();
 
-    await userEvent.click(screen.getByRole('button', { name: 'login.signInButton' }));
+    await userEvent.click(container.querySelector('scds-button') as HTMLElement);
 
     await waitFor(() => {
       const flight = consumeAuthFlight();

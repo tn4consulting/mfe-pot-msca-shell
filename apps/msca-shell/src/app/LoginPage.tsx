@@ -43,11 +43,11 @@ export function LoginPage() {
 
   return (
     <section className="login-page">
-      <h1>{t('login.heading')}</h1>
-      <p>{t('login.intro')}</p>
-      <button type="button" onClick={() => void signIn()}>
+      <scds-heading tag="h1">{t('login.heading')}</scds-heading>
+      <scds-text>{t('login.intro')}</scds-text>
+      <scds-button type="button" onClick={() => void signIn()}>
         {t('login.signInButton')}
-      </button>
+      </scds-button>
     </section>
   );
 }
