@@ -19,6 +19,44 @@
   "accountMenu": {
     "signOut": "Sign out ({{name}})"
   },
+  "appFrame": {
+    "appTitle": "My Service Canada Account",
+    "menuAriaLabel": "Menu",
+    "sidebarLabel": "Site menu",
+    "nav": {
+      "employmentGroupLabel": "Employment",
+      "taxesFinancial": "Taxes / Financial",
+      "health": "Health",
+      "recreationSport": "Recreation / Sport",
+      "travel": "Travel",
+      "education": "Education",
+      "messages": "Messages",
+      "documents": "Documents",
+      "accountGroupLabel": "Account - {{name}}",
+      "myProfile": "My Profile",
+      "preferences": "Preferences",
+      "authorizations": "Authorizations",
+      "security": "Security",
+      "actOnBehalf": "Act on behalf - {{name}}",
+      "logOut": "Log Out"
+    }
+  },
+  "footer": {
+    "contactUs": "Contact us",
+    "news": "News",
+    "primeMinister": "Prime Minister",
+    "departmentsAgencies": "Departments and agencies",
+    "treatiesLawsRegulations": "Treaties, laws and regulations",
+    "aboutGovernment": "About government",
+    "publicServiceMilitary": "Public service and military",
+    "governmentWideReporting": "Government-wide reporting",
+    "openGovernment": "Open government",
+    "socialMedia": "Social media",
+    "mobileApplications": "Mobile applications",
+    "aboutCanada": "About Canada.ca",
+    "termsConditions": "Terms and conditions",
+    "sitePrivacy": "Site Privacy"
+  },
   "login": {
     "heading": "Sign in to My Service Canada Account",
     "intro": "This is a mock sign-in for demonstration purposes only -- no real credentials are used.",

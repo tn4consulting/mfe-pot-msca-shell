@@ -74,13 +74,13 @@ export function AppFrame({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <scds-header app-title="My Service Canada Account" skip-to-href="#main-content">
+      <scds-header app-title={t('appFrame.appTitle')} skip-to-href="#main-content">
         {session && (
           <button
             slot="nav-toggle"
             className="scds-nav-toggle"
             type="button"
-            aria-label="Menu"
+            aria-label={t('appFrame.menuAriaLabel')}
             onClick={() => setSidebarOpen(true)}
           >
             <scds-icon name="menu"></scds-icon>
@@ -104,7 +104,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
 
       <div className="scds-layout">
         {session && (
-          <scds-sidebar open={sidebarOpen} label="Site menu" onScdsClose={() => setSidebarOpen(false)}>
+          <scds-sidebar open={sidebarOpen} label={t('appFrame.sidebarLabel')} onScdsClose={() => setSidebarOpen(false)}>
             <div slot="primary">
               <AppNavLink href="/dashboard" iconName="home">
                 {t('nav.dashboard')}
@@ -112,29 +112,29 @@ export function AppFrame({ children }: { children: ReactNode }) {
               <AppNavLink href="/life-events" iconName="compass">
                 {t('nav.lifeEvents')}
               </AppNavLink>
-              <InertNavLink iconName="finance">Taxes / Financial</InertNavLink>
-              <scds-nav-group label="Employment" icon-name="briefcase">
+              <InertNavLink iconName="finance">{t('appFrame.nav.taxesFinancial')}</InertNavLink>
+              <scds-nav-group label={t('appFrame.nav.employmentGroupLabel')} icon-name="briefcase">
                 <AppNavLink href="/job-bank">{t('nav.jobBank')}</AppNavLink>
                 <AppNavLink href="/employment-insurance">{t('nav.employmentInsurance')}</AppNavLink>
               </scds-nav-group>
-              <InertNavLink iconName="heart">Health</InertNavLink>
-              <InertNavLink iconName="activity">Recreation / Sport</InertNavLink>
-              <InertNavLink iconName="plane">Travel</InertNavLink>
-              <InertNavLink iconName="book">Education</InertNavLink>
+              <InertNavLink iconName="heart">{t('appFrame.nav.health')}</InertNavLink>
+              <InertNavLink iconName="activity">{t('appFrame.nav.recreationSport')}</InertNavLink>
+              <InertNavLink iconName="plane">{t('appFrame.nav.travel')}</InertNavLink>
+              <InertNavLink iconName="book">{t('appFrame.nav.education')}</InertNavLink>
             </div>
             <scds-nav-divider slot="secondary"></scds-nav-divider>
             <div slot="secondary">
-              <InertNavLink iconName="message">Messages</InertNavLink>
-              <InertNavLink iconName="document">Documents</InertNavLink>
-              <scds-nav-group label={`Account - ${session.name}`} icon-name="user">
-                <InertNavLink>My Profile</InertNavLink>
-                <InertNavLink>Preferences</InertNavLink>
-                <InertNavLink>Authorizations</InertNavLink>
-                <InertNavLink>Security</InertNavLink>
+              <InertNavLink iconName="message">{t('appFrame.nav.messages')}</InertNavLink>
+              <InertNavLink iconName="document">{t('appFrame.nav.documents')}</InertNavLink>
+              <scds-nav-group label={t('appFrame.nav.accountGroupLabel', { name: session.name })} icon-name="user">
+                <InertNavLink>{t('appFrame.nav.myProfile')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.preferences')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.authorizations')}</InertNavLink>
+                <InertNavLink>{t('appFrame.nav.security')}</InertNavLink>
               </scds-nav-group>
-              <InertNavLink iconName="user-check">{`Act on behalf - ${session.name}`}</InertNavLink>
+              <InertNavLink iconName="user-check">{t('appFrame.nav.actOnBehalf', { name: session.name })}</InertNavLink>
               <scds-nav-link icon-name="log-out" onClick={signOut}>
-                Log Out
+                {t('appFrame.nav.logOut')}
               </scds-nav-link>
             </div>
           </scds-sidebar>
@@ -152,46 +152,46 @@ export function AppFrame({ children }: { children: ReactNode }) {
           flags as not a navigable address. */}
       <scds-footer>
         <a slot="column-1" href="/contact-us">
-          Contact us
+          {t('footer.contactUs')}
         </a>
         <a slot="column-1" href="/news">
-          News
+          {t('footer.news')}
         </a>
         <a slot="column-1" href="/prime-minister">
-          Prime Minister
+          {t('footer.primeMinister')}
         </a>
         <a slot="column-2" href="/departments-agencies">
-          Departments and agencies
+          {t('footer.departmentsAgencies')}
         </a>
         <a slot="column-2" href="/treaties-laws-regulations">
-          Treaties, laws and regulations
+          {t('footer.treatiesLawsRegulations')}
         </a>
         <a slot="column-2" href="/government">
-          About government
+          {t('footer.aboutGovernment')}
         </a>
         <a slot="column-3" href="/public-service-military">
-          Public service and military
+          {t('footer.publicServiceMilitary')}
         </a>
         <a slot="column-3" href="/government-wide-reporting">
-          Government-wide reporting
+          {t('footer.governmentWideReporting')}
         </a>
         <a slot="column-3" href="/open-government">
-          Open government
+          {t('footer.openGovernment')}
         </a>
         <a slot="bottom" href="/social-media">
-          Social media
+          {t('footer.socialMedia')}
         </a>
         <a slot="bottom" href="/mobile-applications">
-          Mobile applications
+          {t('footer.mobileApplications')}
         </a>
         <a slot="bottom" href="/about">
-          About Canada.ca
+          {t('footer.aboutCanada')}
         </a>
         <a slot="bottom" href="/terms-conditions">
-          Terms and conditions
+          {t('footer.termsConditions')}
         </a>
         <a slot="bottom" href="/site-privacy">
-          Site Privacy
+          {t('footer.sitePrivacy')}
         </a>
       </scds-footer>
     </>

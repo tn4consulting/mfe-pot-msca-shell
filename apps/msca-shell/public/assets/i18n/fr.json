@@ -19,6 +19,44 @@
   "accountMenu": {
     "signOut": "Se déconnecter ({{name}})"
   },
+  "appFrame": {
+    "appTitle": "Mon dossier Service Canada",
+    "menuAriaLabel": "Menu",
+    "sidebarLabel": "Menu du site",
+    "nav": {
+      "employmentGroupLabel": "Emploi",
+      "taxesFinancial": "Impôts et finances",
+      "health": "Santé",
+      "recreationSport": "Loisirs et sport",
+      "travel": "Voyage",
+      "education": "Éducation",
+      "messages": "Messages",
+      "documents": "Documents",
+      "accountGroupLabel": "Compte - {{name}}",
+      "myProfile": "Mon profil",
+      "preferences": "Préférences",
+      "authorizations": "Autorisations",
+      "security": "Sécurité",
+      "actOnBehalf": "Agir au nom de - {{name}}",
+      "logOut": "Fermer la session"
+    }
+  },
+  "footer": {
+    "contactUs": "Contactez-nous",
+    "news": "Nouvelles",
+    "primeMinister": "Premier ministre",
+    "departmentsAgencies": "Ministères et organismes",
+    "treatiesLawsRegulations": "Traités, lois et règlements",
+    "aboutGovernment": "Au sujet du gouvernement",
+    "publicServiceMilitary": "Fonction publique et force militaire",
+    "governmentWideReporting": "Rapports à l'échelle du gouvernement",
+    "openGovernment": "Gouvernement ouvert",
+    "socialMedia": "Médias sociaux",
+    "mobileApplications": "Applications mobiles",
+    "aboutCanada": "À propos de Canada.ca",
+    "termsConditions": "Avis",
+    "sitePrivacy": "Confidentialité du site"
+  },
   "login": {
     "heading": "Ouvrez une session dans Mon dossier Service Canada",
     "intro": "Il s'agit d'une connexion simulée à des fins de démonstration seulement -- aucun identifiant réel n'est utilisé.",
