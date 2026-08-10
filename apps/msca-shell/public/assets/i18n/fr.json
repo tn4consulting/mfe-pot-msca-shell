@@ -49,7 +49,8 @@
       "demoGroupLabel": "Démo",
       "demoGrafana": "Observabilité (Grafana)",
       "demoCms": "Gestion de contenu (Strapi)",
-      "demoJobBank": "Hôte de démonstration Guichet-Emplois"
+      "demoJobBank": "Hôte de démonstration Guichet-Emplois",
+      "demoUnleash": "Indicateurs de fonctionnalités (Unleash)"
     }
   },
   "footer": {

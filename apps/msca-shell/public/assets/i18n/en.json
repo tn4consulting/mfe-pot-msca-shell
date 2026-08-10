@@ -49,7 +49,8 @@
       "demoGroupLabel": "Demo",
       "demoGrafana": "Observability (Grafana)",
       "demoCms": "Content management (Strapi)",
-      "demoJobBank": "Job Bank demo host"
+      "demoJobBank": "Job Bank demo host",
+      "demoUnleash": "Feature flags (Unleash)"
     }
   },
   "footer": {

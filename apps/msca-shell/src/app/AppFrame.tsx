@@ -226,6 +226,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
               <scds-nav-group label={t('appFrame.nav.demoGroupLabel')} icon-name="info-circle">
                 <DemoNavLink href={siblingServiceUrl('grafana')}>{t('appFrame.nav.demoGrafana')}</DemoNavLink>
                 <DemoNavLink href={siblingServiceUrl('cms')}>{t('appFrame.nav.demoCms')}</DemoNavLink>
+                <DemoNavLink href={siblingServiceUrl('unleash')}>{t('appFrame.nav.demoUnleash')}</DemoNavLink>
                 <DemoNavLink href={siblingServiceUrl('job-bank')}>{t('appFrame.nav.demoJobBank')}</DemoNavLink>
               </scds-nav-group>
             </div>
