@@ -65,14 +65,48 @@ jobs:
       - name: Lint, test, build
         run: pnpm exec nx run-many -t lint,test,build --all
 
-  # Stage 2: build the image, deploy this app's own Helm chart to an
-  # ephemeral kind cluster, and confirm it actually serves -- the
-  # kind-based validation stage from CLAUDE.md's Hosting section, now
-  # automated instead of the one-off manual run it started as. msca-shell has
-  # no co-located BFF, so this job only builds/loads/checks one image,
-  # unlike the other 3 extracted app repos.
-  kind-validation:
+  # Stage 1.5: build the image from source exactly once, push to GHCR
+  # (this repo's own GITHUB_TOKEN, no per-cloud credential needed). Both
+  # kind-validation and deploy-eks below pull-and-retag this single build
+  # instead of each independently rebuilding from source -- see
+  # /Users/martin/.claude/plans/create-a-plan-for-cozy-globe.md for the
+  # full design.
+  build-images:
     needs: lint-test-build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push msca-shell image to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/msca-shell/Dockerfile
+          push: true
+          tags: ghcr.io/tn4consulting/mfe-pot-msca-shell:${{ github.sha }}
+          secrets: |
+            npm_token=${{ secrets.NPM_READ_TOKEN }}
+
+  # Stage 2: deploy this app's own Helm chart to an ephemeral kind cluster,
+  # and confirm it actually serves -- the kind-based validation stage from
+  # CLAUDE.md's Hosting section, now automated instead of the one-off
+  # manual run it started as. msca-shell has no co-located BFF, so this
+  # job only pulls/loads/checks one image, unlike the other 3 extracted
+  # app repos.
+  kind-validation:
+    needs: build-images
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -91,17 +125,19 @@ jobs:
           repository: tn4consulting/mfe-pot-platform
           path: mfe-pot-platform
 
-      - uses: docker/setup-buildx-action@v3
-
-      - name: Build msca-shell image
-        uses: docker/build-push-action@v6
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
-          context: mfe-pot-msca-shell
-          file: mfe-pot-msca-shell/apps/msca-shell/Dockerfile
-          tags: mfe-pot-msca-shell:kind
-          load: true
-          secrets: |
-            npm_token=${{ secrets.NPM_READ_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          # workflow-level permissions.packages: read already covers this
+          # pull -- this job has no job-level permissions override.
+
+      - name: Pull and retag image from GHCR for kind
+        run: |
+          docker pull ghcr.io/tn4consulting/mfe-pot-msca-shell:${{ github.sha }}
+          docker tag ghcr.io/tn4consulting/mfe-pot-msca-shell:${{ github.sha }} mfe-pot-msca-shell:kind
 
       # Pinned node image: this environment's Docker daemon (cgroup v1)
       # can't kubeadm-init kind's current default node image (built for
@@ -158,7 +194,8 @@ jobs:
           curl -sf -H "Host: msca.mfe-pot.local" http://localhost/ | grep -qi '<script src="env.js">'
           curl -sf -H "Host: msca.mfe-pot.local" http://localhost/env.js | grep -q '"remotes"'
 
-  # Stage 2: build+push the real image to ECR and deploy to the real AWS EKS
+  # Stage 3: mirror the image build-images already pushed to GHCR into ECR
+  # (pull+retag+push, not a rebuild), and deploy to the real AWS EKS
   # cluster, on push to main only. See
   # mfe-pot/docs/plans/20260808-1500-mfe-pot-aws-eks-terraform.md for the
   # full design. The demo cluster is intentionally torn down between demos
@@ -173,6 +210,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: read
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -206,6 +244,14 @@ jobs:
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Login to GHCR
+        if: steps.check.outputs.cluster_up == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       # ECR repos here have immutable tags, and the tag is the commit SHA --
       # re-triggering this job for a commit already deployed once (e.g.
       # mfe-pot/tools/deploy-eks.sh re-pointing a freshly recreated cluster
@@ -221,16 +267,12 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Build and push msca-shell image
+      - name: Mirror msca-shell image from GHCR to ECR
         if: steps.check.outputs.cluster_up == 'true' && steps.image-exists.outputs.exists != 'true'
-        uses: docker/build-push-action@v6
-        with:
-          context: mfe-pot-msca-shell
-          file: mfe-pot-msca-shell/apps/msca-shell/Dockerfile
-          push: true
-          tags: ${{ steps.ecr-login.outputs.registry }}/mfe-pot-msca-shell:${{ github.sha }}
-          secrets: |
-            npm_token=${{ secrets.NPM_READ_TOKEN }}
+        run: |
+          docker pull ghcr.io/tn4consulting/mfe-pot-msca-shell:${{ github.sha }}
+          docker tag ghcr.io/tn4consulting/mfe-pot-msca-shell:${{ github.sha }} ${{ steps.ecr-login.outputs.registry }}/mfe-pot-msca-shell:${{ github.sha }}
+          docker push ${{ steps.ecr-login.outputs.registry }}/mfe-pot-msca-shell:${{ github.sha }}
 
       - name: Update kubeconfig
         if: steps.check.outputs.cluster_up == 'true'
