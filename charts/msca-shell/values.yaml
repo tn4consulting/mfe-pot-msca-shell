@@ -48,6 +48,12 @@ frontend:
       employment-insurance-mfe: "http://employment-insurance-mfe.mfe-pot.local/remoteEntry.json"
       dashboard-mfe: "http://dashboard-mfe.mfe-pot.local/remoteEntry.json"
       life-events-mfe: "http://life-events-mfe.mfe-pot.local/remoteEntry.json"
+    # Explicitly false here (not omitted) for every real deployment --
+    # main.tsx's dev default is `true` (nx serve never signs anything), so
+    # an absent key would silently inherit that and disable verification
+    # in production too. See mfe-pot/docs/plans/
+    # 20260811-1500-federation-remote-loading-integrity.md.
+    allowUnverifiedRemotes: false
 
 ingress:
   host: msca.mfe-pot.local

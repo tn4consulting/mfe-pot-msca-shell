@@ -36,6 +36,9 @@ importers:
       '@tn4consulting/shared-observability':
         specifier: ^0.1.1
         version: 0.1.1
+      '@tn4consulting/shared-remote-integrity':
+        specifier: ^0.3.0
+        version: 0.3.0
       '@tn4consulting/shared-runtime-config':
         specifier: ^0.1.4
         version: 0.1.4
@@ -2202,6 +2205,10 @@ packages:
     resolution: {integrity: sha512-kRz2MNTx8p/ZSVeTuwGG6J1k6cPy7+Ktgoy74z/nh7oKMQ6eZcCk2iftlBXi5I+jPmsxSBJm3obqgCwTbq654w==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-platform-standards/0.2.0/b64e4a6183a05887d541d4dde837ceb86e9a1f9b}
     hasBin: true
 
+  '@tn4consulting/shared-remote-integrity@0.3.0':
+    resolution: {integrity: sha512-j2w0GRfkxqUzRqHX93al2nJOIxbUNIEdBq0PUDAfxLClJy7eGFEvgcZrDMfDnGQINewl8whIr9Bd+SumlxkVZQ==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-remote-integrity/0.3.0/8660259a256cdc2e715c4df9f24f3b0a60df8c3b}
+    hasBin: true
+
   '@tn4consulting/shared-runtime-config@0.1.4':
     resolution: {integrity: sha512-gFSqm28XISQowq1maFjWuRNScXAE57EjRG4+KrpgDuQ0HTR1jMjQI0qWXySrf2/vBnyeZpZ0ATgnNG0Pr4UPrw==, tarball: https://npm.pkg.github.com/download/@tn4consulting/shared-runtime-config/0.1.4/df515d211b976c6d9fa401e83f34ff5cd07412e3}
 
@@ -4260,6 +4267,9 @@ packages:
   jiti@2.7.0:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
+
+  jose@6.2.8:
+    resolution: {integrity: sha512-Bsdjwm3Qsd/P0jR+BHDe3LytDfY7WBq2HmCCLIwuVRHMuEC9ae7/R474GIUdF1NgCyZjzVo/A9DOiOBtXq8ZoQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -8358,6 +8368,10 @@ snapshots:
 
   '@tn4consulting/shared-platform-standards@0.2.0': {}
 
+  '@tn4consulting/shared-remote-integrity@0.3.0':
+    dependencies:
+      jose: 6.2.8
+
   '@tn4consulting/shared-runtime-config@0.1.4': {}
 
   '@tn4consulting/shared-ui-scds-core@1.3.0': {}
@@ -11092,6 +11106,8 @@ snapshots:
 
   jiti@2.7.0:
     optional: true
+
+  jose@6.2.8: {}
 
   js-tokens@4.0.0: {}
 

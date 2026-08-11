@@ -9,7 +9,7 @@
     "deploy:local": "bash tools/deploy-local.sh",
     "check:versions": "check-platform-versions",
     "check:boundaries": "check-bff-boundaries",
-    "postinstall": "sync-platform-standards"
+    "postinstall": "sync-platform-standards && sync-trusted-remotes --dest apps/msca-shell/src/generated/trusted-remotes.json"
   },
   "private": true,
   "devDependencies": {
@@ -60,6 +60,7 @@
     "@tn4consulting/shared-federation-runtime": "^2.1.0",
     "@tn4consulting/shared-i18n": "^1.1.0",
     "@tn4consulting/shared-observability": "^0.1.1",
+    "@tn4consulting/shared-remote-integrity": "^0.3.0",
     "@tn4consulting/shared-runtime-config": "^0.1.4",
     "@tn4consulting/shared-ui-scds-core": "^1.3.0",
     "es-module-shims": "^2.8.0",

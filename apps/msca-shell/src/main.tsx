@@ -4,6 +4,16 @@
 // `styles` build option used to inject one automatically.
 import './styles.css';
 import { initFederation } from '@softarc/native-federation-orchestrator';
+// Relative imports, not bare specifiers -- safe from this file despite the
+// bare-specifier constraint documented below, since esbuild resolves them
+// directly rather than through the not-yet-existing import map. See
+// mfe-pot/docs/plans/20260811-1500-federation-remote-loading-integrity.md.
+import trustedRemotes from './generated/trusted-remotes.json';
+import {
+  verifyManifestEntrySignature,
+  type RemoteManifestClaims,
+  type TrustedRemotesRegistry,
+} from './verify-manifest-signature';
 
 /**
  * Reads runtime config directly off `window.__mfePotEnv` rather than
@@ -32,6 +42,22 @@ declare global {
 interface ShellRuntimeConfig {
   strapiBaseUrl: string | undefined;
   remotes: Record<string, string>;
+  /**
+   * Escape hatch for federation remote-loading integrity (see
+   * mfe-pot/docs/plans/20260811-1500-federation-remote-loading-integrity.md):
+   * `nx serve`'s dev server never signs anything (only the Docker build
+   * does, via sign-remote-manifest), so strict Stage A/B verification
+   * would make every remote permanently unloadable in local dev. Same
+   * runtime-config mechanism as everything else here -- `devDefaults`
+   * below sets this `true` for local dev; the Helm chart's `values.yaml`
+   * sets it back to `false` explicitly for every real deployment (kind
+   * and EKS alike), the same way it already pins every other field here
+   * rather than relying on an absent key silently falling back to the dev
+   * default. `true` only ever *warns* (console.warn) and still loads the
+   * remote unverified -- it never blocks anything, since its whole
+   * purpose is unblocking local dev, not a second enforcement mode.
+   */
+  allowUnverifiedRemotes: boolean;
 }
 
 const devDefaults: ShellRuntimeConfig = {
@@ -42,6 +68,7 @@ const devDefaults: ShellRuntimeConfig = {
     'job-bank-mfe': 'http://localhost:4203/remoteEntry.json',
     'employment-insurance-mfe': 'http://localhost:4204/remoteEntry.json',
   },
+  allowUnverifiedRemotes: true,
 };
 
 const injected = window.__mfePotEnv as Partial<ShellRuntimeConfig> | undefined;
@@ -74,7 +101,7 @@ interface StrapiListResponse {
   data: StrapiRemoteAttributes[];
 }
 
-async function resolveFederationManifest(): Promise<Record<string, string>> {
+async function fetchCandidateManifest(): Promise<Record<string, string>> {
   if (!runtimeConfig.strapiBaseUrl) {
     return runtimeConfig.remotes;
   }
@@ -97,6 +124,92 @@ async function resolveFederationManifest(): Promise<Record<string, string>> {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+/**
+ * Stage A of federation remote-loading integrity (see the design doc
+ * linked above `trustedRemotes`'s import): for every candidate manifest
+ * entry (Strapi's live directory, or the fallback config above), fetches
+ * `remoteEntry.json` and its sibling `remoteEntry.json.sig`, verifies the
+ * signature against `trustedRemotes`, and re-hashes the fetched bytes
+ * against the now-trusted claims. Only entries that pass are admitted to
+ * `initFederation()` -- an unverifiable remote is dropped (logged, not
+ * thrown), the same degrade-quietly posture `RemoteErrorBoundary` already
+ * uses elsewhere in this family, rather than a fatal error for the whole
+ * shell.
+ *
+ * `verifiedManifests`/`remoteBaseUrls` are threaded down through
+ * `bootstrap()` for Stage B (`App.tsx`'s `createVerifiedRemoteModuleLoader`)
+ * to consume -- covers both `RemoteRouteHost`'s routed remotes AND
+ * cross-remote widget loading (`routes.tsx`'s `WIDGET_REGISTRY`), since
+ * both ultimately call through the one `loadRemoteModule` closure wrapped
+ * in `App.tsx`.
+ *
+ * `runtimeConfig.allowUnverifiedRemotes` (`true` by dev default, `false`
+ * in every real Helm-deployed environment) skips verification entirely
+ * and admits every candidate as-is -- see `ShellRuntimeConfig`'s own doc
+ * comment above.
+ */
+async function verifyAndAdmitManifest(candidates: Record<string, string>): Promise<{
+  manifestUrls: Record<string, string>;
+  verifiedManifests: Map<string, RemoteManifestClaims>;
+  remoteBaseUrls: Map<string, string>;
+}> {
+  if (runtimeConfig.allowUnverifiedRemotes) {
+    for (const remoteName of Object.keys(candidates)) {
+      console.warn(
+        `Remote "${remoteName}" admitted WITHOUT signature verification -- ` +
+          'allowUnverifiedRemotes is set, which should only ever be true in local dev.',
+      );
+    }
+    return { manifestUrls: candidates, verifiedManifests: new Map(), remoteBaseUrls: new Map() };
+  }
+
+  const registry = trustedRemotes as unknown as TrustedRemotesRegistry;
+  const manifestUrls: Record<string, string> = {};
+  const verifiedManifests = new Map<string, RemoteManifestClaims>();
+  const remoteBaseUrls = new Map<string, string>();
+
+  const results = await Promise.allSettled(
+    Object.entries(candidates).map(async ([remoteName, manifestUrl]) => {
+      const [manifestRes, sigRes] = await Promise.all([
+        fetch(manifestUrl),
+        fetch(new URL('remoteEntry.json.sig', manifestUrl)),
+      ]);
+      if (!manifestRes.ok || !sigRes.ok) {
+        throw new Error(`fetch failed for manifest or signature (status ${manifestRes.status}/${sigRes.status})`);
+      }
+      const manifestBytes = await manifestRes.arrayBuffer();
+      const compactJws = await sigRes.text();
+      const verified = await verifyManifestEntrySignature(
+        remoteName,
+        manifestUrl,
+        manifestBytes,
+        compactJws,
+        registry,
+      );
+      if (!verified) {
+        throw new Error('signature verification failed');
+      }
+      return { remoteName, manifestUrl, claims: verified.claims };
+    }),
+  );
+
+  results.forEach((result, index) => {
+    const [remoteName] = Object.entries(candidates)[index];
+    if (result.status === 'fulfilled') {
+      manifestUrls[remoteName] = result.value.manifestUrl;
+      remoteBaseUrls.set(remoteName, result.value.manifestUrl);
+      verifiedManifests.set(remoteName, result.value.claims);
+    } else {
+      console.warn(
+        `Remote "${remoteName}" failed integrity verification, dropping from federation manifest`,
+        result.reason,
+      );
+    }
+  });
+
+  return { manifestUrls, verifiedManifests, remoteBaseUrls };
 }
 
 /**
@@ -159,12 +272,22 @@ function setShimImportMap(
  * own shared react/react-dom entries get pooled in regardless of whether
  * any other remote is reachable.
  */
-resolveFederationManifest()
-  .then((manifest) =>
-    initFederation(manifest, { hostRemoteEntry: 'remoteEntry.json', setImportMapFn: setShimImportMap }),
+fetchCandidateManifest()
+  .then((candidates) => verifyAndAdmitManifest(candidates))
+  .then(({ manifestUrls, verifiedManifests, remoteBaseUrls }) =>
+    initFederation(manifestUrls, {
+      hostRemoteEntry: 'remoteEntry.json',
+      setImportMapFn: setShimImportMap,
+    }).then((federationResult) => ({ federationResult, verifiedManifests, remoteBaseUrls })),
   )
-  .then((federationResult) => {
+  .then(({ federationResult, verifiedManifests, remoteBaseUrls }) => {
     const { loadRemoteModule } = federationResult.as<Record<string, unknown>>();
-    return import('./bootstrap').then((m) => m.bootstrap(loadRemoteModule));
+    return import('./bootstrap').then((m) =>
+      m.bootstrap(loadRemoteModule, {
+        verifiedManifests,
+        remoteBaseUrls,
+        allowUnverifiedRemotes: runtimeConfig.allowUnverifiedRemotes,
+      }),
+    );
   })
   .catch((err) => console.error(err));
